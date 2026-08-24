@@ -33,15 +33,6 @@
                                     <input type="datetime-local" id="horario" name="horario" class="form-control" value="{{ old('horario') }}">
                                 </div>
 
-                                <div class="mb-4">
-                                    <label for="barbeiro" class="form-label">Barbeiro</label>
-                                    <select id="barbeiro" name="barbeiro" class="form-control">
-                                        @foreach ($barbeiros as $barbeiro)
-                                            <option value="{{ $barbeiro }}" @selected(old('barbeiro') === $barbeiro)>{{ $barbeiro }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('barbeiro') <div class="text-danger">{{ $message }}</div> @enderror
-                                </div>
 
                                 <button type="submit" class="btn btn-secondary w-100">
                                     <i class="fa-regular"></i>Salvar agendamento
@@ -51,7 +42,7 @@
                     </div>
 
                     <div class="text-center mt-4">
-                        <a href="{{ route('cortes.cadastrados') }}" class="text-warning">Ver meus cortes agendados</a>
+                        <a href="{{ route('cortes.cadastrados') }}" class="text-warning">Ver cortes agendados</a>
                     </div>
 
                     <div class="text-center text-secondary mt-4">
