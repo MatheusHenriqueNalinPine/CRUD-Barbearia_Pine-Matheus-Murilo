@@ -8,7 +8,7 @@
             <div class="col-md-10 col-lg-8 col-sm-11">
                 <div class="card p-5">
                     <div class="text-center p-3 mb-4">
-                        <img src="{{ asset('assets/images/icon.png') }}" alt="Barbearia Pine" style="max-width: 180px; height: auto;">
+                        <img src="{{ asset('assets/images/icon.png') }}" alt="BarbeariaPine" style="max-width: 210px; height: auto; filter: drop-shadow(0 0 18px rgba(5, 5, 5, 0.25));">
                         <h1 class="text-info h2 mt-3">Seus cortes agendados</h1>
                     </div>
 

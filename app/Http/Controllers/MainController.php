@@ -28,7 +28,7 @@ class MainController extends Controller
     {
         $dados = $request->validate([
             'nome_corte' => ['required', 'string', 'min:3', 'max:100'],
-            'horario' => ['required', 'date'],
+            'horario' => ['required'],
             'barbeiro' => ['required', 'string', 'in:' . implode(',', self::BARBEIROS)],
         ], [
             'nome_corte.required' => 'Informe o nome do corte.',
@@ -50,7 +50,7 @@ class MainController extends Controller
     {
         $agendamentos = $this->agendamentosDoVisitante()->latest('horario')->get();
 
-        return view('cortesCadastradosUsuario', compact('agendamentos'));
+        return view('cortesCadastrados', compact('agendamentos'));
     }
 
     private function agendamentosDoVisitante()

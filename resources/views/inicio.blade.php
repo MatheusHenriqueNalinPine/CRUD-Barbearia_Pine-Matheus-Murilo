@@ -19,6 +19,16 @@
                         <div class="alert alert-success text-center">{{ session('success') }}</div>
                     @endif
 
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $erro)
+                                    <li>{{ $erro }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <div class="row justify-content-center">
                         <div class="col-md-9 col-12">
                             <form action="{{ route('inicio.store') }}" method="POST">
@@ -31,6 +41,18 @@
                                 <div class="mb-3">
                                     <label for="horario" class="form-label">Horário</label>
                                     <input type="datetime-local" id="horario" name="horario" class="form-control" value="{{ old('horario') }}">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="barbeiro" class="form-label">Barbeiro</label>
+                                    <select id="barbeiro" name="barbeiro" class="form-select">
+                                        <option value="">Selecione um barbeiro</option>
+                                        @foreach ($barbeiros as $barbeiro)
+                                            @if ($barbeiro !== '')
+                                                <option value="{{ $barbeiro }}" @selected(old('barbeiro') === $barbeiro)>{{ $barbeiro }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
                                 </div>
 
 
