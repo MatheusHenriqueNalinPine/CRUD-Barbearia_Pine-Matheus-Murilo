@@ -17,8 +17,11 @@
 
 					<div class="row justify-content-center">
 						<div class="col-md-8 col-12">
-							<a href="{{ route('login') }}" class="btn btn-secondary w-100">
+							<a href="{{ route('new') }}" class="btn btn-secondary w-100 mb-2">
 								<i class="fa-regular"></i>Cadastrar horário dos cortes agendados
+							</a>
+							<a href="{{ route('logout') }}" class="btn btn-secondary w-100">
+								<i class="fa-regular"></i>Logout
 							</a>
 						</div>
 					</div>

@@ -40,13 +40,13 @@ class AuthController extends Controller
         if (!$user) {
             return redirect()->back()
                 ->withInput()
-                ->with('loginerror', 'E-mail ou senha incorretos!');
+                ->with('login_error', 'E-mail ou senha incorretos!');
         }
 
         if (!password_verify($senha, $user->password)) {
             return redirect()->back()
                 ->withInput()
-                ->with('loginerror', 'E-mail ou senha incorretos!');
+                ->with('login_error', 'E-mail ou senha incorretos!');
         }
 
         session([
