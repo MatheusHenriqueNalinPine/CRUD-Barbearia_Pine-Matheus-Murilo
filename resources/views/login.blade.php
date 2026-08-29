@@ -39,7 +39,7 @@
 
                                 <div class="mb-3 mt-4">
                                     <button type="submit" class="btn btn-secondary w-100">
-                                        <i class="fa-solid"></i>&nbsp;&nbsp;LOGIN
+                                         <i class="fa-solid fa-right-to-bracket"></i>&nbsp;&nbsp;LOGIN
                                     </button>
                                 </div>
                             </form>

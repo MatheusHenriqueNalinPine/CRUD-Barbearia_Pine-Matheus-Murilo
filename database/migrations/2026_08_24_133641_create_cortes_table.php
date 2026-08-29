@@ -8,19 +8,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('agendamentos', function (Blueprint $table) {
+        Schema::create('cortes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->string('session_key')->nullable()->index();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('nome_corte', 100);
-            $table->dateTime('horario');
-            $table->string('barbeiro', 100);
+            $table->decimal('preco', 8, 2);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('agendamentos');
+        Schema::dropIfExists('cortes');
     }
 };
