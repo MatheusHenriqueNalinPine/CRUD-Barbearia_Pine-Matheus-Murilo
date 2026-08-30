@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Corte;
 use App\Services\Operations;
-use Illuminate\Contracts\Encryption\DecryptException;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 
 class MainController extends Controller
@@ -24,7 +22,7 @@ class MainController extends Controller
         ]);
     }
 
-    public function  newCorte()
+    public function newCorte()
     {
         return view('new_corte');
     }
@@ -33,15 +31,12 @@ class MainController extends Controller
     {
         $request->validate([
             'nome_corte' => 'required|min:3|max:100',
-            'horario' => 'required|date_format:H:i',
             'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'preco' => 'required|numeric|min:0',
         ], [
             'nome_corte.required' => 'Informe o nome do corte.',
             'nome_corte.min' => 'O nome do corte deve ter pelo menos :min caracteres.',
             'nome_corte.max' => 'O nome do corte deve ter no máximo :max caracteres.',
-            'horario.required' => 'Informe o horário do corte.',
-            'horario.date_format' => 'Informe um horário válido.',
             'imagem.image' => 'O arquivo enviado deve ser uma imagem.',
             'imagem.mimes' => 'A imagem deve estar em formato JPG, PNG, GIF ou WEBP.',
             'imagem.max' => 'A imagem não pode ultrapassar 2 MB.',
@@ -55,7 +50,6 @@ class MainController extends Controller
         $corte = new Corte();
         $corte->user_id = $id;
         $corte->nome_corte = $request->nome_corte;
-        $corte->horario = $request->horario;
         $corte->imagem = $request->file('imagem')?->store('cortes', 'public');
         $corte->preco = $request->preco;
         $corte->save();
@@ -65,9 +59,16 @@ class MainController extends Controller
 
     public function editCorte($id)
     {
+        $userId = session('user')['id'];
         $decrypted_id = Operations::decryptId($id);
 
-        $corte = Corte::find($decrypted_id);
+        $corte = Corte::where('id', $decrypted_id)
+            ->where('user_id', $userId)
+            ->first();
+
+        if (!$corte) {
+            return redirect()->route('home');
+        }
 
         return view('edit_corte', ['corte' => $corte]);
     }
@@ -80,15 +81,12 @@ class MainController extends Controller
 
         $request->validate([
             'nome_corte' => 'required|min:3|max:100',
-            'horario' => 'required|date_format:H:i',
             'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'preco' => 'required|numeric|min:0',
         ], [
             'nome_corte.required' => 'Informe o nome do corte.',
             'nome_corte.min' => 'O nome do corte deve ter pelo menos :min caracteres.',
             'nome_corte.max' => 'O nome do corte deve ter no máximo :max caracteres.',
-            'horario.required' => 'Informe o horário do corte.',
-            'horario.date_format' => 'Informe um horário válido.',
             'imagem.image' => 'O arquivo enviado deve ser uma imagem.',
             'imagem.mimes' => 'A imagem deve estar em formato JPG, PNG, GIF ou WEBP.',
             'imagem.max' => 'A imagem não pode ultrapassar 2 MB.',
@@ -97,18 +95,18 @@ class MainController extends Controller
             'preco.min' => 'O preço não pode ser negativo.',
         ]);
 
-        // Desencriptar o ID
+        $userId = session('user')['id'];
         $id = Operations::decryptId($request->corte_id);
 
-        // Carregar o corte
-        $corte = Corte::find($id);
+        $corte = Corte::where('id', $id)
+            ->where('user_id', $userId)
+            ->first();
 
         if (!$corte) {
             return redirect()->route('home');
         }
 
         $corte->nome_corte = $request->nome_corte;
-        $corte->horario = $request->horario;
         if ($request->hasFile('imagem')) {
             if ($corte->imagem) {
                 Storage::disk('public')->delete($corte->imagem);
@@ -124,27 +122,84 @@ class MainController extends Controller
 
     public function deleteCorte($id)
     {
+        $userId = session('user')['id'];
         $corteId = Operations::decryptId($id);
-        $corte = Corte::find($corteId);
 
-        return view('delete_corte', ['corte' => $corte]);
+        $corte = Corte::where('id', $corteId)
+            ->where('user_id', $userId)
+            ->first();
+
+        if ($corte) {
+            $corte->delete();
+        }
+
+        return redirect()->route('home');
     }
 
     public function deleteCorteConfirm($id)
     {
+        $userId = session('user')['id'];
         $corteId = Operations::decryptId($id);
-        $corte = Corte::find($corteId);
+
+        $corte = Corte::onlyTrashed()
+            ->where('id', $corteId)
+            ->where('user_id', $userId)
+            ->first();
 
         if (!$corte) {
-            return redirect()->route('home');
+            return redirect()->route('lixeira');
         }
 
-        if ($corte->imagem) {
-            Storage::disk('public')->delete($corte->imagem);
-        }
+        return view('delete_corte', ['corte' => $corte]);
+    }
 
-        $corte->delete();
+    public function lixeira()
+    {
+        $userId = session('user')['id'];
+
+        $cortes = Corte::onlyTrashed()
+            ->where('user_id', $userId)
+            ->orderBy('deleted_at', 'desc')
+            ->get();
+
+        return view('trash', ['cortes' => $cortes]);
+    }
+
+    public function restoreCorte($id)
+    {
+        $userId = session('user')['id'];
+        $corteId = Operations::decryptId($id);
+
+        $corte = Corte::onlyTrashed()
+            ->where('id', $corteId)
+            ->where('user_id', $userId)
+            ->first();
+
+        if ($corte) {
+            $corte->restore();
+        }
 
         return redirect()->route('home');
+    }
+
+    public function forceDeleteCorte($id)
+    {
+        $userId = session('user')['id'];
+        $corteId = Operations::decryptId($id);
+
+        $corte = Corte::onlyTrashed()
+            ->where('id', $corteId)
+            ->where('user_id', $userId)
+            ->first();
+
+        if ($corte) {
+            if ($corte->imagem) {
+                Storage::disk('public')->delete($corte->imagem);
+            }
+
+            $corte->forceDelete();
+        }
+
+        return redirect()->route('lixeira');
     }
 }

@@ -1,56 +1,59 @@
-@extends('layouts.topbar_layout')
+@extends('layouts.main_layout')
 
-@section('page-content')
-	<div class="home-content px-3 px-md-5 py-3">
-		<div class="text-center p-3 mb-3">
-			<img src="{{ asset('assets/images/icon.png') }}" alt="BarbeariaPine" style="max-width: 210px; height: auto; filter: drop-shadow(0 0 18px rgba(5, 5, 5, 0.25));">
+@section('content')
+<div class="d-flex" style="min-height: 100vh;">
+	<div class="bg-dark text-light p-3 d-flex flex-column" style="width: 220px; min-height: 100vh;">
+		<div class="text-center mb-4">
+			<img src="{{ asset('assets/images/icon.png') }}" alt="BarbeariaPine" class="img-fluid mb-2" style="max-width: 120px;">
 		</div>
 
-		<div class="row justify-content-center text-center">
-			<div class="col-12">
-				<h1 class="text-info mb-3">Bem-vindo barbeiro</h1>
+		<a href="{{ route('new') }}" class="btn btn-warning fw-bold mb-2 text-start">
+			<i class="fa-solid fa-scissors me-2"></i>Novo corte
+		</a>
+
+		<a href="{{ route('lixeira') }}" class="btn btn-outline-light mb-2 text-start">
+			<i class="fa-solid fa-trash me-2"></i>Lixeira
+		</a>
+
+		<div class="mt-auto">
+			<div class="text-center text-secondary small mb-2">
+				<i class="fa-solid fa-user me-1"></i>{{ session('user')['username'] }}
 			</div>
-		</div>
-
-		<div class="row justify-content-center">
-			<div class="col-md-8 col-12">
-				<a href="{{ route('new') }}" class="btn btn-secondary w-100 mb-2">
-					<i class="fa-regular"></i>Cadastrar horário dos cortes agendados
-				</a>
-			</div>
-		</div>
-
-		<div class="mt-4">
-			<h2 class="text-info mb-3">Cortes cadastrados</h2>
-
-			@if($cortes->isEmpty())
-				<div class="alert alert-secondary text-center text-dark">
-					Nenhum corte cadastrado ainda.
-				</div>
-			@else
-				<div class="list-group">
-					@foreach($cortes as $corte)
-						<div class="corte-card list-group-item d-flex justify-content-between align-items-center bg-dark text-light border-secondary mb-2 rounded gap-3">
-							<div>
-								@if($corte->imagem)
-									<img src="{{ asset('storage/' . $corte->imagem) }}" alt="{{ $corte->nome_corte }}" class="corte-card-image me-2">
-								@endif
-								<strong>{{ $corte->nome_corte }}</strong>
-								<div class="text-secondary">Horário: {{ substr($corte->horario, 0, 5) }}</div>
-							</div>
-							<div class="text-end d-flex align-items-center gap-2">
-								<span class="badge bg-secondary text-dark">R$ {{ number_format($corte->preco, 2, ',', '.') }}</span>
-								<a href="{{ route('edit', ['id' => \App\Services\Operations::encryptId($corte->id)]) }}" class="btn btn-sm btn-warning text-dark">Editar</a>
-								<a href="{{ route('delete', ['id' => \App\Services\Operations::encryptId($corte->id)]) }}" class="btn btn-sm btn-danger">Excluir</a>
-							</div>
-						</div>
-					@endforeach
-				</div>
-			@endif
-		</div>
-
-		<div class="text-center text-secondary mt-4">
-			<small>&copy;Copyright <?= date('Y') ?></small>
+			<a href="{{ route('logout') }}" class="btn btn-danger w-100 text-start">
+				<i class="fa-solid fa-right-from-bracket me-2"></i>Logout
+			</a>
 		</div>
 	</div>
+
+	<div class="flex-fill p-4 bg-black text-light">
+
+		<div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+			<h1 class="h3 mb-0">Registros de Cortes</h1>
+
+			<div class="input-group" style="max-width: 400px;">
+				<span class="input-group-text bg-dark text-light border-0">
+					<i class="fa-solid fa-magnifying-glass"></i>
+				</span>
+				<input type="text" class="form-control bg-dark text-light border-0" placeholder="Search">
+			</div>
+		</div>
+
+		@if(count($cortes) === 0)
+		<div class="row mt-5">
+			<div class="col text-center">
+				<p class="display-6 mb-5 text-secondary opacity-50">Você não possui cortes cadastrados</p>
+			</div>
+		</div>
+		@else
+		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+			@foreach ($cortes as $corte)
+			<div class="col">
+				@include('corte')
+			</div>
+			@endforeach
+		</div>
+		@endif
+
+	</div>
+</div>
 @endsection
