@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Corte;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -21,7 +22,7 @@ class DatabaseSeeder extends Seeder
             'username' => 'murilo',
             'email' => 'murilo@email.com',
         ]);
-
-        User::factory(3)->create();
+        User::factory(5)->create();
+        Corte::factory(5)->create();
     }
 }
