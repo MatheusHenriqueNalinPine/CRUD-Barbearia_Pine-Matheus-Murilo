@@ -11,8 +11,21 @@
 
                     <div class="row justify-content-center">
                         <div class="col-md-10 col-12">
-                            <form action="{{ route('login.submit') }}" method="POST" novalidate>
+                            <form action="{{ route('cadastro.submit') }}" method="POST" novalidate>
                                 @csrf
+
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Usuário</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-dark text-info">
+                                        </span>
+                                        <input type="text" class="form-control bg-dark text-info" name="username" value="{{ old('username') }}" maxlength="50">
+                                    </div>
+                                    @error('username')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
                                 <div class="mb-3">
                                     <label for="email" class="form-label">E-mail</label>
                                     <div class="input-group">
@@ -26,38 +39,35 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
+                                    <label for="password" class="form-label">Senha</label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-dark text-info">
                                         </span>
-                                        <input type="password" class="form-control bg-dark text-info" name="password" value="{{ old('password') }}" maxlength="20">
+                                        <input type="password" class="form-control bg-dark text-info" name="password" maxlength="20">
                                     </div>
                                     @error('password')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
 
+                                <div class="mb-3">
+                                    <label for="password_confirmation" class="form-label">Confirmar senha</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-dark text-info">
+                                        </span>
+                                        <input type="password" class="form-control bg-dark text-info" name="password_confirmation" maxlength="20">
+                                    </div>
+                                </div>
+
                                 <div class="mb-3 mt-4">
                                     <button type="submit" class="btn btn-secondary w-100">
-                                         <i class="fa-solid fa-right-to-bracket"></i>&nbsp;&nbsp;LOGIN
+                                        <i class="fa-solid fa-user-plus"></i>&nbsp;&nbsp;CADASTRAR
                                     </button>
                                 </div>
                             </form>
 
-                            @if(session('login_error'))
-                                <div class="alert alert-danger text-center">
-                                    {{ session('login_error') }}
-                                </div>
-                            @endif
-
-                            @if(session('cadastro_success'))
-                                <div class="alert alert-success text-center mt-3">
-                                    {{ session('cadastro_success') }}
-                                </div>
-                            @endif
-
                             <div class="text-center mt-3">
-                                <a href="{{ route('cadastro') }}" class="text-decoration-none" style="color: #f39c12;">cadastre-se aqui</a>
+                                <a href="{{ route('login') }}" class="text-decoration-none" style="color: #f39c12;">Já possui conta? Faça login</a>
                             </div>
                         </div>
                     </div>
