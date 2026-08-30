@@ -42,14 +42,71 @@
             color: #f0d78c !important;
         }
 
+        .corte-card {
+            min-height: 180px;
+            padding: 22px 24px !important;
+        }
+
+        .corte-card-image {
+            width: 88px;
+            height: 88px;
+            object-fit: cover;
+            border-radius: 3px;
+        }
+
+        .corte-price {
+            min-width: 110px;
+            padding: 7px 12px;
+            border-left: 2px solid #d9b654;
+            color: #f0d78c;
+            line-height: 1;
+        }
+
+        .corte-price-label {
+            display: block;
+            margin-bottom: 4px;
+            color: #a8a8a8;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .corte-price-currency {
+            margin-right: 3px;
+            color: #d9d9d9;
+            font-size: 0.8rem;
+        }
+
+        .corte-price-value {
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .btn {
+            min-height: 44px;
+            padding: 10px 18px;
+            border-radius: 3px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 700;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        .btn-sm {
+            min-height: 44px;
+            padding: 10px 18px;
+            font-size: 1rem;
+            border-radius: 3px;
+        }
+
         .btn-secondary {
             background: linear-gradient(135deg, #c89b2e, #d9b654);
             border: none;
             color: #111;
-            font-weight: 700;
             letter-spacing: 1px;
-            border-radius: 3px;
-            padding: 12px 14px;
         }
 
         .btn-secondary:hover {

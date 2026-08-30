@@ -8,12 +8,20 @@ use App\Models\Corte;
 use App\Services\Operations;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Storage;
 
 class MainController extends Controller
 {
     public function index()
     {
-        return view('home');
+        $userId = session('user')['id'];
+        $user = User::find($userId);
+        $cortes = Corte::where('user_id', $userId)->orderBy('created_at', 'desc')->get();
+
+        return view('home', [
+            'cortes' => $cortes,
+            'user' => $user,
+        ]);
     }
 
     public function  newCorte()
@@ -25,11 +33,18 @@ class MainController extends Controller
     {
         $request->validate([
             'nome_corte' => 'required|min:3|max:100',
+            'horario' => 'required|date_format:H:i',
+            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'preco' => 'required|numeric|min:0',
         ], [
             'nome_corte.required' => 'Informe o nome do corte.',
             'nome_corte.min' => 'O nome do corte deve ter pelo menos :min caracteres.',
             'nome_corte.max' => 'O nome do corte deve ter no máximo :max caracteres.',
+            'horario.required' => 'Informe o horário do corte.',
+            'horario.date_format' => 'Informe um horário válido.',
+            'imagem.image' => 'O arquivo enviado deve ser uma imagem.',
+            'imagem.mimes' => 'A imagem deve estar em formato JPG, PNG, GIF ou WEBP.',
+            'imagem.max' => 'A imagem não pode ultrapassar 2 MB.',
             'preco.required' => 'Informe o preço do corte.',
             'preco.numeric' => 'O preço deve ser um valor numérico.',
             'preco.min' => 'O preço não pode ser negativo.',
@@ -40,6 +55,8 @@ class MainController extends Controller
         $corte = new Corte();
         $corte->user_id = $id;
         $corte->nome_corte = $request->nome_corte;
+        $corte->horario = $request->horario;
+        $corte->imagem = $request->file('imagem')?->store('cortes', 'public');
         $corte->preco = $request->preco;
         $corte->save();
 
@@ -63,11 +80,18 @@ class MainController extends Controller
 
         $request->validate([
             'nome_corte' => 'required|min:3|max:100',
+            'horario' => 'required|date_format:H:i',
+            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'preco' => 'required|numeric|min:0',
         ], [
             'nome_corte.required' => 'Informe o nome do corte.',
             'nome_corte.min' => 'O nome do corte deve ter pelo menos :min caracteres.',
             'nome_corte.max' => 'O nome do corte deve ter no máximo :max caracteres.',
+            'horario.required' => 'Informe o horário do corte.',
+            'horario.date_format' => 'Informe um horário válido.',
+            'imagem.image' => 'O arquivo enviado deve ser uma imagem.',
+            'imagem.mimes' => 'A imagem deve estar em formato JPG, PNG, GIF ou WEBP.',
+            'imagem.max' => 'A imagem não pode ultrapassar 2 MB.',
             'preco.required' => 'Informe o preço do corte.',
             'preco.numeric' => 'O preço deve ser um valor numérico.',
             'preco.min' => 'O preço não pode ser negativo.',
@@ -84,6 +108,14 @@ class MainController extends Controller
         }
 
         $corte->nome_corte = $request->nome_corte;
+        $corte->horario = $request->horario;
+        if ($request->hasFile('imagem')) {
+            if ($corte->imagem) {
+                Storage::disk('public')->delete($corte->imagem);
+            }
+
+            $corte->imagem = $request->file('imagem')->store('cortes', 'public');
+        }
         $corte->preco = $request->preco;
         $corte->save();
 
@@ -105,6 +137,10 @@ class MainController extends Controller
 
         if (!$corte) {
             return redirect()->route('home');
+        }
+
+        if ($corte->imagem) {
+            Storage::disk('public')->delete($corte->imagem);
         }
 
         $corte->delete();

@@ -7,6 +7,7 @@
                 <div class="card p-5">
                     <div class="text-center p-3 mb-3">
                         <img src="{{ asset('assets/images/icon.png') }}" alt="BarbeariaPine" style="max-width: 210px; height: auto; filter: drop-shadow(0 0 18px rgba(8, 8, 8, 0.25));">
+                        <p class="mt-3 mb-0" style="color: #d9b654;">Mantenha sua agenda em dia !</p>
                     </div>
 
                     <div class="row justify-content-center">
@@ -57,7 +58,7 @@
                             @endif
 
                             <div class="text-center mt-3">
-                                <a href="{{ route('cadastro') }}" class="text-decoration-none" style="color: #f39c12;">cadastre-se aqui</a>
+                                <a href="{{ route('cadastro') }}" class="text-decoration-none" style="color: #f39c12;">Cadastre-se aqui</a>
                             </div>
                         </div>
                     </div>
