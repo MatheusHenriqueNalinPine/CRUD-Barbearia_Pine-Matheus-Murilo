@@ -13,6 +13,8 @@ class Corte extends Model
     protected $fillable = [
         'user_id',
         'nome_corte',
+        'horario',
+        'imagem',
         'preco',
     ];
 
