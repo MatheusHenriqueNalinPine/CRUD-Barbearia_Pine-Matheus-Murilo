@@ -10,15 +10,23 @@ use Illuminate\Support\Facades\Storage;
 
 class MainController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $userId = session('user')['id'];
         $user = User::find($userId);
-        $cortes = Corte::where('user_id', $userId)->orderBy('created_at', 'desc')->get();
+        $search = trim($request->input('search', ''));
+
+        $cortes = Corte::where('user_id', $userId)
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where('nome_corte', 'like', "%{$search}%");
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('home', [
             'cortes' => $cortes,
             'user' => $user,
+            'search' => $search,
         ]);
     }
 

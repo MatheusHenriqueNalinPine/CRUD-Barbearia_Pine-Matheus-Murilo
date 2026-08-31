@@ -30,18 +30,39 @@
 		<div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
 			<h1 class="h3 mb-0">Registros de Cortes</h1>
 
-			<div class="input-group" style="max-width: 400px;">
-				<span class="input-group-text bg-dark text-light border-0">
-					<i class="fa-solid fa-magnifying-glass"></i>
-				</span>
-				<input type="text" class="form-control bg-dark text-light border-0" placeholder="Search">
-			</div>
+			<form method="GET" action="{{ route('home') }}" class="d-flex align-items-center gap-2" style="max-width: 500px; width: 100%;">
+				<div class="input-group flex-grow-1">
+					<span class="input-group-text bg-dark text-light border-0">
+						<i class="fa-solid fa-magnifying-glass"></i>
+					</span>
+					<input
+						type="text"
+						name="search"
+						value="{{ request('search') }}"
+						class="form-control bg-dark text-light border-0"
+						placeholder="Pesquisar corte"
+					>
+					<button class="btn btn-warning fw-bold" type="submit">Buscar</button>
+				</div>
+
+				@if(request('search'))
+				<a href="{{ route('home') }}" class="btn btn-outline-light btn-sm fw-bold">
+					<i class="fa-solid fa-rotate-left me-1"></i>Voltar
+				</a>
+				@endif
+			</form>
 		</div>
 
-		@if(count($cortes) === 0)
+		@if($cortes->isEmpty())
 		<div class="row mt-5">
 			<div class="col text-center">
-				<p class="display-6 mb-5 text-secondary opacity-50">Você não possui cortes cadastrados</p>
+				<p class="display-6 mb-5 text-secondary opacity-50">
+					@if(request('search'))
+						Nenhum corte "{{ request('search') }}" encontrado
+					@else
+						Você não possui cortes cadastrados
+					@endif
+				</p>
 			</div>
 		</div>
 		@else

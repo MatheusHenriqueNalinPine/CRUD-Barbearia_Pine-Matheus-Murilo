@@ -31,7 +31,7 @@ class AuthController extends Controller
                 'username.string' => 'O usuário deve conter apenas texto válido.',
                 'username.min' => 'O usuário deve ter no mínimo 3 caracteres.',
                 'username.max' => 'O usuário deve ter no máximo 50 caracteres.',
-                'username.unique' => 'Este usuário já está em uso.',
+                'username.unique' => 'Este nome de usuário já existe.',
 
                 'email.required' => 'O campo e-mail é obrigatório.',
                 'email.email' => 'Digite um endereço de e-mail válido.',
@@ -42,7 +42,7 @@ class AuthController extends Controller
                 'password.string' => 'A senha deve conter apenas texto válido.',
                 'password.min' => 'A senha deve ter no mínimo 6 caracteres.',
                 'password.max' => 'A senha deve ter no máximo 20 caracteres.',
-                'password.confirmed' => 'A confirmação da senha não confere.',
+                'password.confirmed' => 'Senha incorreta.',
             ]
         );
 
