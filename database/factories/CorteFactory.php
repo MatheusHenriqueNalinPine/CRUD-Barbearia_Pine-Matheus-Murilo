@@ -23,7 +23,6 @@ class CorteFactory extends Factory
         return [
             'user_id' => User::factory(),
             'nome_corte' => fake()->name(),
-            'horario' => fake()->time('H:i:s'),
             'imagem' => fake()->optional()->imageUrl(640, 480, 'barber'),
             'preco' => fake()->randomFloat(2, 25, 180),
         ];
