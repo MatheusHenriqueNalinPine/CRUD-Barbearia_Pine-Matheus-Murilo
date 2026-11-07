@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\ProdutoController;
 use App\Http\Middleware\CheckIsLogged;
 use App\Http\Middleware\CheckIsNotLogged;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,16 @@ Route::middleware([CheckIsLogged::class])->group(function () {
     Route::get('/delete-corte-confirm/{id}', [MainController::class, 'deleteCorteConfirm'])->name('delete.confirm');
     Route::get('/force-delete-corte/{id}', [MainController::class, 'forceDeleteCorte'])->name('forceDelete');
     Route::get('/restore-corte/{id}', [MainController::class, 'restoreCorte'])->name('restore');
+    Route::get('/produtos', [ProdutoController::class, 'index'])->name('produtos.index');
+    Route::get('/new-produto', [ProdutoController::class, 'create'])->name('produtos.create');
+    Route::post('/new-produto', [ProdutoController::class, 'store'])->name('produtos.store');
+    Route::get('/edit-produto/{id}', [ProdutoController::class, 'edit'])->name('produtos.edit');
+    Route::post('/edit-produto/{id}', [ProdutoController::class, 'update'])->name('produtos.update');
+    Route::post('/produto/{id}/estoque/{operacao}', [ProdutoController::class, 'adjustStock'])->name('produtos.stock.adjust');
+    Route::get('/delete-produto/{id}', [ProdutoController::class, 'destroy'])->name('produtos.destroy');
+    Route::get('/restore-produto/{id}', [ProdutoController::class, 'restore'])->name('produtos.restore');
+    Route::get('/delete-produto-confirm/{id}', [ProdutoController::class, 'confirmForceDelete'])->name('produtos.delete.confirm');
+    Route::get('/force-delete-produto/{id}', [ProdutoController::class, 'forceDelete'])->name('produtos.force-delete');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 

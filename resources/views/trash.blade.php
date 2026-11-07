@@ -11,6 +11,10 @@
             <i class="fa-solid fa-house me-2"></i>Home
         </a>
 
+        <a href="{{ route('produtos.index') }}" class="btn btn-outline-light mb-2 text-start">
+            <i class="fa-solid fa-box-open me-2"></i>Produtos
+        </a>
+
         <div class="mt-auto">
             <div class="text-center text-secondary small mb-2">
                 <i class="fa-solid fa-user me-1"></i>{{ session('user')['username'] }}
@@ -34,10 +38,10 @@
             </div>
         </div>
 
-        @if(count($cortes) === 0)
+        @if($cortes->isEmpty() && $produtos->isEmpty())
         <div class="row mt-5">
             <div class="col text-center">
-                <p class="display-6 mb-5 text-secondary opacity-50">Você não possui cortes na lixeira</p>
+                <p class="display-6 mb-5 text-secondary opacity-50">Você não possui itens na lixeira</p>
             </div>
         </div>
         @else
@@ -45,6 +49,11 @@
             @foreach ($cortes as $corte)
             <div class="col">
                 @include('corte_trash')
+            </div>
+            @endforeach
+            @foreach ($produtos as $produto)
+            <div class="col">
+                @include('produto_trash')
             </div>
             @endforeach
         </div>

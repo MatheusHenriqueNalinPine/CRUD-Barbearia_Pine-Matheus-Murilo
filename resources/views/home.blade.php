@@ -11,6 +11,10 @@
 			<i class="fa-solid fa-scissors me-2"></i>Novo corte
 		</a>
 
+		<a href="{{ route('produtos.index') }}" class="btn btn-outline-light mb-2 text-start">
+			<i class="fa-solid fa-box-open me-2"></i>Produtos
+		</a>
+
 		<a href="{{ route('lixeira') }}" class="btn btn-outline-light mb-2 text-start">
 			<i class="fa-solid fa-trash me-2"></i>Lixeira
 		</a>

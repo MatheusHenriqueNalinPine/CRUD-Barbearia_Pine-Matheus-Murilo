@@ -18,4 +18,9 @@ class User extends Model
     {
         return $this->hasMany(Corte::class);
     }
+
+    public function produtos()
+    {
+        return $this->hasMany(Produto::class);
+    }
 }
