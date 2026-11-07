@@ -70,7 +70,18 @@
             </div>
             @endforeach
         </div>
-        <div class="d-flex justify-content-center mt-4">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mt-4">
+            <form method="GET" action="{{ route('fornecedores.index') }}" class="d-flex align-items-center gap-2">
+                @if($search !== '')
+                <input type="hidden" name="search" value="{{ $search }}">
+                @endif
+                <label for="fornecedores-order" class="text-nowrap">Ordenar:</label>
+                <select id="fornecedores-order" name="order" class="form-select bg-dark text-light border-secondary">
+                    <option value="recent" @selected($order === 'recent')>Mais recentes</option>
+                    <option value="oldest" @selected($order === 'oldest')>Mais antigos</option>
+                </select>
+                <button class="btn btn-warning fw-bold" type="submit">Aplicar</button>
+            </form>
             {{ $fornecedores->links() }}
         </div>
         @endif

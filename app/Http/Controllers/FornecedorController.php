@@ -12,18 +12,20 @@ class FornecedorController extends Controller
     public function index(Request $request)
     {
         $search = trim($request->input('search', ''));
+        $order = $request->input('order') === 'oldest' ? 'asc' : 'desc';
         $fornecedores = Fornecedor::withCount('produtos')
             ->where('user_id', session('user')['id'])
             ->when($search !== '', function ($query) use ($search) {
                 $query->where('nome', 'like', "%{$search}%");
             })
-            ->orderBy('nome')
+            ->orderBy('created_at', $order)
             ->paginate(9)
             ->withQueryString();
 
         return view('fornecedores', [
             'fornecedores' => $fornecedores,
             'search' => $search,
+            'order' => $request->input('order') === 'oldest' ? 'oldest' : 'recent',
         ]);
     }
 

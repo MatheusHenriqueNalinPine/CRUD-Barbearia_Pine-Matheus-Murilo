@@ -34,12 +34,6 @@
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
             <h1 class="h3 mb-0">Lixeira</h1>
 
-            <div class="input-group" style="max-width: 400px;">
-                <span class="input-group-text bg-dark text-light border-0">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </span>
-                <input type="text" class="form-control bg-dark text-light border-0" placeholder="Search">
-            </div>
         </div>
 
         @if($cortes->total() === 0 && $produtos->total() === 0 && $fornecedores->total() === 0)
@@ -58,7 +52,15 @@
             </div>
             @endforeach
         </div>
-        <div class="d-flex justify-content-center mb-4">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+            <form method="GET" action="{{ route('lixeira') }}" class="d-flex align-items-center gap-2">
+                <label for="trash-cortes-order" class="text-nowrap">Ordenar:</label>
+                <select id="trash-cortes-order" name="order" class="form-select bg-dark text-light border-secondary">
+                    <option value="recent" @selected($order === 'recent')>Mais recentes</option>
+                    <option value="oldest" @selected($order === 'oldest')>Mais antigos</option>
+                </select>
+                <button class="btn btn-warning fw-bold" type="submit">Aplicar</button>
+            </form>
             {{ $cortes->links() }}
         </div>
         @endif
@@ -72,7 +74,15 @@
             </div>
             @endforeach
         </div>
-        <div class="d-flex justify-content-center mb-4">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+            <form method="GET" action="{{ route('lixeira') }}" class="d-flex align-items-center gap-2">
+                <label for="trash-produtos-order" class="text-nowrap">Ordenar:</label>
+                <select id="trash-produtos-order" name="order" class="form-select bg-dark text-light border-secondary">
+                    <option value="recent" @selected($order === 'recent')>Mais recentes</option>
+                    <option value="oldest" @selected($order === 'oldest')>Mais antigos</option>
+                </select>
+                <button class="btn btn-warning fw-bold" type="submit">Aplicar</button>
+            </form>
             {{ $produtos->links() }}
         </div>
         @endif
@@ -86,7 +96,15 @@
             </div>
             @endforeach
         </div>
-        <div class="d-flex justify-content-center mb-4">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+            <form method="GET" action="{{ route('lixeira') }}" class="d-flex align-items-center gap-2">
+                <label for="trash-fornecedores-order" class="text-nowrap">Ordenar:</label>
+                <select id="trash-fornecedores-order" name="order" class="form-select bg-dark text-light border-secondary">
+                    <option value="recent" @selected($order === 'recent')>Mais recentes</option>
+                    <option value="oldest" @selected($order === 'oldest')>Mais antigos</option>
+                </select>
+                <button class="btn btn-warning fw-bold" type="submit">Aplicar</button>
+            </form>
             {{ $fornecedores->links() }}
         </div>
         @endif

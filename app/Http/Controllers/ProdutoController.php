@@ -15,18 +15,20 @@ class ProdutoController extends Controller
     {
         $userId = session('user')['id'];
         $search = trim($request->input('search', ''));
+        $order = $request->input('order') === 'oldest' ? 'asc' : 'desc';
 
         $produtos = Produto::with('fornecedor')->where('user_id', $userId)
             ->when($search !== '', function ($query) use ($search) {
                 $query->where('nome', 'like', "%{$search}%");
             })
-            ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', $order)
             ->paginate(9)
             ->withQueryString();
 
         return view('produtos', [
             'produtos' => $produtos,
             'search' => $search,
+            'order' => $request->input('order') === 'oldest' ? 'oldest' : 'recent',
         ]);
     }
 

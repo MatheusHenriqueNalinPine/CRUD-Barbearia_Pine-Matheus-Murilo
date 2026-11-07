@@ -17,12 +17,13 @@ class MainController extends Controller
         $userId = session('user')['id'];
         $user = User::find($userId);
         $search = trim($request->input('search', ''));
+        $order = $request->input('order') === 'oldest' ? 'asc' : 'desc';
 
         $cortes = Corte::where('user_id', $userId)
             ->when($search !== '', function ($query) use ($search) {
                 $query->where('nome_corte', 'like', "%{$search}%");
             })
-            ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', $order)
             ->paginate(9)
             ->withQueryString();
 
@@ -30,6 +31,7 @@ class MainController extends Controller
             'cortes' => $cortes,
             'user' => $user,
             'search' => $search,
+            'order' => $request->input('order') === 'oldest' ? 'oldest' : 'recent',
         ]);
     }
 
@@ -167,22 +169,23 @@ class MainController extends Controller
     public function lixeira()
     {
         $userId = session('user')['id'];
+        $order = request()->input('order') === 'oldest' ? 'asc' : 'desc';
 
         $cortes = Corte::onlyTrashed()
             ->where('user_id', $userId)
-            ->orderBy('deleted_at', 'desc')
+            ->orderBy('deleted_at', $order)
             ->paginate(9, ['*'], 'cortes_page')
             ->withQueryString();
 
         $produtos = Produto::onlyTrashed()
             ->where('user_id', $userId)
-            ->orderBy('deleted_at', 'desc')
+            ->orderBy('deleted_at', $order)
             ->paginate(9, ['*'], 'produtos_page')
             ->withQueryString();
 
         $fornecedores = Fornecedor::onlyTrashed()
             ->where('user_id', $userId)
-            ->orderBy('deleted_at', 'desc')
+            ->orderBy('deleted_at', $order)
             ->paginate(9, ['*'], 'fornecedores_page')
             ->withQueryString();
 
@@ -190,6 +193,7 @@ class MainController extends Controller
             'cortes' => $cortes,
             'produtos' => $produtos,
             'fornecedores' => $fornecedores,
+            'order' => request()->input('order') === 'oldest' ? 'oldest' : 'recent',
         ]);
     }
 
