@@ -8,6 +8,7 @@ use App\Models\Corte;
 use App\Models\Fornecedor;
 use App\Models\Produto;
 use App\Services\Operations;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 
 class MainController extends Controller
@@ -33,6 +34,28 @@ class MainController extends Controller
             'search' => $search,
             'order' => $request->input('order') === 'oldest' ? 'oldest' : 'recent',
         ]);
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $userId = session('user')['id'];
+        $search = trim($request->input('search', ''));
+        $order = $request->input('order') === 'oldest' ? 'asc' : 'desc';
+
+        $cortes = Corte::where('user_id', $userId)
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where('nome_corte', 'like', "%{$search}%");
+            })
+            ->orderBy('created_at', $order)
+            ->orderBy('id', $order)
+            ->get();
+
+        return Pdf::loadView('pdf.cortes', [
+            'cortes' => $cortes,
+            'search' => $search,
+        ])
+            ->setPaper('a4', 'portrait')
+            ->download('lista-de-cortes.pdf');
     }
 
     public function newCorte()

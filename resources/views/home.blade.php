@@ -93,7 +93,12 @@
 				</select>
 				<button class="btn btn-warning fw-bold" type="submit">Aplicar</button>
 			</form>
-			{{ $cortes->links() }}
+			<div class="d-flex align-items-center flex-wrap gap-3">
+				<a href="{{ route('cortes.pdf', array_filter(['search' => $search, 'order' => $order === 'oldest' ? 'oldest' : 'recent'])) }}" class="btn btn-outline-danger">
+					<i class="fa-solid fa-file-pdf me-1"></i>Gerar PDF
+				</a>
+				{{ $cortes->links() }}
+			</div>
 		</div>
 		@endif
 
