@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ProdutoController extends Controller
 {
-    public function index(Request $request)
+     public function index(Request $request)
     {
         $userId = session('user')['id'];
         $search = trim($request->input('search', ''));
