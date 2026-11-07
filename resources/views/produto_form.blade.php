@@ -1,4 +1,19 @@
 <div class="mb-3">
+    <label class="form-label" for="fornecedor_id">Fornecedor</label>
+    <select id="fornecedor_id" class="form-select bg-black text-light border-secondary" name="fornecedor_id">
+        <option value="">Sem fornecedor</option>
+        @foreach($fornecedores as $fornecedor)
+        <option value="{{ $fornecedor->id }}" @selected((string) old('fornecedor_id', isset($produto) ? $produto->fornecedor_id : '') === (string) $fornecedor->id)>
+            {{ $fornecedor->nome }}
+        </option>
+        @endforeach
+    </select>
+    @error('fornecedor_id')
+        <div class="text-danger small mt-1">{{ $message }}</div>
+    @enderror
+</div>
+
+<div class="mb-3">
     <label class="form-label" for="nome">Nome do produto</label>
     <input id="nome" type="text" class="form-control bg-black text-light border-secondary" name="nome" value="{{ old('nome', isset($produto) ? $produto->nome : '') }}" maxlength="100" required>
     @error('nome')

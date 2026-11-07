@@ -15,6 +15,10 @@
             <i class="fa-solid fa-box-open me-2"></i>Produtos
         </a>
 
+        <a href="{{ route('fornecedores.index') }}" class="btn btn-outline-light mb-2 text-start">
+            <i class="fa-solid fa-truck-field me-2"></i>Fornecedores
+        </a>
+
         <div class="mt-auto">
             <div class="text-center text-secondary small mb-2">
                 <i class="fa-solid fa-user me-1"></i>{{ session('user')['username'] }}
@@ -38,7 +42,7 @@
             </div>
         </div>
 
-        @if($cortes->isEmpty() && $produtos->isEmpty())
+        @if($cortes->isEmpty() && $produtos->isEmpty() && $fornecedores->isEmpty())
         <div class="row mt-5">
             <div class="col text-center">
                 <p class="display-6 mb-5 text-secondary opacity-50">Você não possui itens na lixeira</p>
@@ -54,6 +58,11 @@
             @foreach ($produtos as $produto)
             <div class="col">
                 @include('produto_trash')
+            </div>
+            @endforeach
+            @foreach ($fornecedores as $fornecedor)
+            <div class="col">
+                @include('fornecedor_trash')
             </div>
             @endforeach
         </div>

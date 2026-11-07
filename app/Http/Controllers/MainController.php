@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Corte;
+use App\Models\Fornecedor;
 use App\Models\Produto;
 use App\Services\Operations;
 use Illuminate\Support\Facades\Storage;
@@ -176,9 +177,15 @@ class MainController extends Controller
             ->orderBy('deleted_at', 'desc')
             ->get();
 
+        $fornecedores = Fornecedor::onlyTrashed()
+            ->where('user_id', $userId)
+            ->orderBy('deleted_at', 'desc')
+            ->get();
+
         return view('trash', [
             'cortes' => $cortes,
             'produtos' => $produtos,
+            'fornecedores' => $fornecedores,
         ]);
     }
 

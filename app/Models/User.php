@@ -23,4 +23,9 @@ class User extends Model
     {
         return $this->hasMany(Produto::class);
     }
+
+    public function fornecedores()
+    {
+        return $this->hasMany(Fornecedor::class);
+    }
 }

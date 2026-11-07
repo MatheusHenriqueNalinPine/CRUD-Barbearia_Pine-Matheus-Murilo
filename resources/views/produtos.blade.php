@@ -13,6 +13,9 @@
         <a href="{{ route('produtos.create') }}" class="btn btn-warning fw-bold mb-2 text-start">
             <i class="fa-solid fa-plus me-2"></i>Novo produto
         </a>
+        <a href="{{ route('fornecedores.index') }}" class="btn btn-outline-light mb-2 text-start">
+            <i class="fa-solid fa-truck-field me-2"></i>Fornecedores
+        </a>
         <a href="{{ route('lixeira') }}" class="btn btn-outline-light mb-2 text-start">
             <i class="fa-solid fa-trash me-2"></i>Lixeira
         </a>

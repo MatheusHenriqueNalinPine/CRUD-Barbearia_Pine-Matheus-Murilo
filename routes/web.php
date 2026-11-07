@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Middleware\CheckIsLogged;
@@ -28,6 +29,15 @@ Route::middleware([CheckIsLogged::class])->group(function () {
     Route::get('/restore-produto/{id}', [ProdutoController::class, 'restore'])->name('produtos.restore');
     Route::get('/delete-produto-confirm/{id}', [ProdutoController::class, 'confirmForceDelete'])->name('produtos.delete.confirm');
     Route::get('/force-delete-produto/{id}', [ProdutoController::class, 'forceDelete'])->name('produtos.force-delete');
+    Route::get('/fornecedores', [FornecedorController::class, 'index'])->name('fornecedores.index');
+    Route::get('/new-fornecedor', [FornecedorController::class, 'create'])->name('fornecedores.create');
+    Route::post('/new-fornecedor', [FornecedorController::class, 'store'])->name('fornecedores.store');
+    Route::get('/edit-fornecedor/{id}', [FornecedorController::class, 'edit'])->name('fornecedores.edit');
+    Route::post('/edit-fornecedor/{id}', [FornecedorController::class, 'update'])->name('fornecedores.update');
+    Route::get('/delete-fornecedor/{id}', [FornecedorController::class, 'destroy'])->name('fornecedores.destroy');
+    Route::get('/restore-fornecedor/{id}', [FornecedorController::class, 'restore'])->name('fornecedores.restore');
+    Route::get('/delete-fornecedor-confirm/{id}', [FornecedorController::class, 'confirmForceDelete'])->name('fornecedores.delete.confirm');
+    Route::get('/force-delete-fornecedor/{id}', [FornecedorController::class, 'forceDelete'])->name('fornecedores.force-delete');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produto;
+use App\Models\Fornecedor;
 use App\Services\Operations;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 
 class ProdutoController extends Controller
@@ -14,7 +16,7 @@ class ProdutoController extends Controller
         $userId = session('user')['id'];
         $search = trim($request->input('search', ''));
 
-        $produtos = Produto::where('user_id', $userId)
+        $produtos = Produto::with('fornecedor')->where('user_id', $userId)
             ->when($search !== '', function ($query) use ($search) {
                 $query->where('nome', 'like', "%{$search}%");
             })
@@ -29,7 +31,9 @@ class ProdutoController extends Controller
 
     public function create()
     {
-        return view('new_produto');
+        return view('new_produto', [
+            'fornecedores' => $this->activeSuppliers(),
+        ]);
     }
 
     public function store(Request $request)
@@ -51,7 +55,10 @@ class ProdutoController extends Controller
             return redirect()->route('produtos.index');
         }
 
-        return view('edit_produto', ['produto' => $produto]);
+        return view('edit_produto', [
+            'produto' => $produto,
+            'fornecedores' => $this->activeSuppliers(),
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -181,7 +188,21 @@ class ProdutoController extends Controller
             'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'preco' => 'required|numeric|min:0|max:999999.99',
             'quantidade' => 'required|integer|min:0|max:1000000',
+            'fornecedor_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('fornecedores', 'id')
+                    ->where('user_id', session('user')['id'])
+                    ->whereNull('deleted_at'),
+            ],
         ];
+    }
+
+    private function activeSuppliers()
+    {
+        return Fornecedor::where('user_id', session('user')['id'])
+            ->orderBy('nome')
+            ->get();
     }
 
     private function messages(): array

@@ -14,6 +14,7 @@
             <p class="mb-2 text-white fs-5 text-break"><strong>{{ $produto->nome }}</strong></p>
             <p class="mb-1 text-nowrap" style="color: #adb5bd;"><strong>Preço:</strong> R$ {{ number_format($produto->preco, 2, ',', '.') }}</p>
             <p class="mb-0 text-nowrap" style="color: #adb5bd;"><strong>Estoque:</strong> {{ $produto->quantidade }}</p>
+            <p class="mb-0 text-break" style="color: #adb5bd;"><strong>Fornecedor:</strong> {{ $produto->fornecedor?->nome ?? 'Não informado' }}</p>
         </div>
     </div>
 

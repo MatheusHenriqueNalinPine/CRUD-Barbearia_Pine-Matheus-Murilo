@@ -12,6 +12,7 @@ class Produto extends Model
 
     protected $fillable = [
         'user_id',
+        'fornecedor_id',
         'nome',
         'descricao',
         'imagem',
@@ -29,5 +30,10 @@ class Produto extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function fornecedor()
+    {
+        return $this->belongsTo(Fornecedor::class);
     }
 }
