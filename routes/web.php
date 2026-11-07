@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProdutoController;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware([CheckIsLogged::class])->group(function () {
     Route::get('/', [MainController::class, 'index'])->name('home');
     Route::get('/cortes/pdf', [MainController::class, 'exportPdf'])->name('cortes.pdf');
+    Route::get('/lixeira/clientes/pdf', [MainController::class, 'exportTrashedClientsPdf'])->name('lixeira.clientes.pdf');
     Route::get('/lixeira/cortes/pdf', [MainController::class, 'exportTrashedCutsPdf'])->name('lixeira.cortes.pdf');
     Route::get('/lixeira/produtos/pdf', [MainController::class, 'exportTrashedProductsPdf'])->name('lixeira.produtos.pdf');
     Route::get('/lixeira/fornecedores/pdf', [MainController::class, 'exportTrashedSuppliersPdf'])->name('lixeira.fornecedores.pdf');
@@ -44,6 +46,16 @@ Route::middleware([CheckIsLogged::class])->group(function () {
     Route::get('/restore-fornecedor/{id}', [FornecedorController::class, 'restore'])->name('fornecedores.restore');
     Route::get('/delete-fornecedor-confirm/{id}', [FornecedorController::class, 'confirmForceDelete'])->name('fornecedores.delete.confirm');
     Route::get('/force-delete-fornecedor/{id}', [FornecedorController::class, 'forceDelete'])->name('fornecedores.force-delete');
+    Route::get('/clientes', [ClienteController::class, 'index'])->name('clientes.index');
+    Route::get('/clientes/pdf', [ClienteController::class, 'exportPdf'])->name('clientes.pdf');
+    Route::get('/new-cliente', [ClienteController::class, 'create'])->name('clientes.create');
+    Route::post('/new-cliente', [ClienteController::class, 'store'])->name('clientes.store');
+    Route::get('/edit-cliente/{id}', [ClienteController::class, 'edit'])->name('clientes.edit');
+    Route::post('/edit-cliente/{id}', [ClienteController::class, 'update'])->name('clientes.update');
+    Route::get('/delete-cliente/{id}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
+    Route::get('/restore-cliente/{id}', [ClienteController::class, 'restore'])->name('clientes.restore');
+    Route::get('/delete-cliente-confirm/{id}', [ClienteController::class, 'confirmForceDelete'])->name('clientes.delete.confirm');
+    Route::get('/force-delete-cliente/{id}', [ClienteController::class, 'forceDelete'])->name('clientes.force-delete');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 

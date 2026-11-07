@@ -28,4 +28,9 @@ class User extends Model
     {
         return $this->hasMany(Fornecedor::class);
     }
+
+    public function clientes()
+    {
+        return $this->hasMany(Cliente::class);
+    }
 }

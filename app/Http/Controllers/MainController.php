@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Corte;
+use App\Models\Cliente;
 use App\Models\Fornecedor;
 use App\Models\Produto;
 use App\Services\Operations;
@@ -99,6 +100,21 @@ class MainController extends Controller
         return Pdf::loadView('pdf.fornecedores_lixeira', ['fornecedores' => $fornecedores])
             ->setPaper('a4', 'landscape')
             ->download('lixeira-de-fornecedores.pdf');
+    }
+
+    public function exportTrashedClientsPdf(Request $request)
+    {
+        $order = $request->input('order') === 'oldest' ? 'asc' : 'desc';
+        $clientes = Cliente::onlyTrashed()
+            ->with('corteFavorito')
+            ->where('user_id', session('user')['id'])
+            ->orderBy('deleted_at', $order)
+            ->orderBy('id', $order)
+            ->get();
+
+        return Pdf::loadView('pdf.clientes_lixeira', ['clientes' => $clientes])
+            ->setPaper('a4', 'portrait')
+            ->download('lixeira-de-clientes.pdf');
     }
 
     public function newCorte()
@@ -255,10 +271,18 @@ class MainController extends Controller
             ->paginate(9, ['*'], 'fornecedores_page')
             ->withQueryString();
 
+        $clientes = Cliente::onlyTrashed()
+            ->with('corteFavorito')
+            ->where('user_id', $userId)
+            ->orderBy('deleted_at', $order)
+            ->paginate(9, ['*'], 'clientes_page')
+            ->withQueryString();
+
         return view('trash', [
             'cortes' => $cortes,
             'produtos' => $produtos,
             'fornecedores' => $fornecedores,
+            'clientes' => $clientes,
             'order' => request()->input('order') === 'oldest' ? 'oldest' : 'recent',
         ]);
     }

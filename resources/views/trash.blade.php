@@ -18,6 +18,9 @@
         <a href="{{ route('fornecedores.index') }}" class="btn btn-outline-light mb-2 text-start">
             <i class="fa-solid fa-truck-field me-2"></i>Fornecedores
         </a>
+        <a href="{{ route('clientes.index') }}" class="btn btn-outline-light mb-2 text-start">
+            <i class="fa-solid fa-users me-2"></i>Clientes
+        </a>
 
         <div class="mt-auto">
             <div class="text-center text-secondary small mb-2">
@@ -36,7 +39,7 @@
 
         </div>
 
-        @if($cortes->total() === 0 && $produtos->total() === 0 && $fornecedores->total() === 0)
+        @if($cortes->total() === 0 && $produtos->total() === 0 && $fornecedores->total() === 0 && $clientes->total() === 0)
         <div class="row mt-5">
             <div class="col text-center">
                 <p class="display-6 mb-5 text-secondary opacity-50">Você não possui itens na lixeira</p>
@@ -120,6 +123,33 @@
                     <i class="fa-solid fa-file-pdf me-1"></i>Gerar PDF
                 </a>
                 {{ $fornecedores->links() }}
+            </div>
+        </div>
+        @endif
+
+        @if($clientes->total() > 0)
+        <h2 class="h5 mb-3">Clientes</h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-3">
+            @foreach ($clientes as $cliente)
+            <div class="col">
+                @include('cliente_trash')
+            </div>
+            @endforeach
+        </div>
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+            <form method="GET" action="{{ route('lixeira') }}" class="d-flex align-items-center gap-2">
+                <label for="trash-clientes-order" class="text-nowrap">Ordenar:</label>
+                <select id="trash-clientes-order" name="order" class="form-select bg-dark text-light border-secondary">
+                    <option value="recent" @selected($order === 'recent')>Mais recentes</option>
+                    <option value="oldest" @selected($order === 'oldest')>Mais antigos</option>
+                </select>
+                <button class="btn btn-warning fw-bold" type="submit">Aplicar</button>
+            </form>
+            <div class="d-flex align-items-center flex-wrap gap-3">
+                <a href="{{ route('lixeira.clientes.pdf', ['order' => $order]) }}" class="btn btn-outline-danger">
+                    <i class="fa-solid fa-file-pdf me-1"></i>Gerar PDF
+                </a>
+                {{ $clientes->links() }}
             </div>
         </div>
         @endif

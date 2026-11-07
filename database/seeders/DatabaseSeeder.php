@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Cliente;
 use App\Models\Fornecedor;
 use App\Models\Produto;
 use App\Models\Corte;
@@ -49,6 +50,19 @@ class DatabaseSeeder extends Seeder
                     ->state(fn () => [
                         'user_id' => $user->id,
                         'fornecedor_id' => fake()->randomElement($fornecedorIds),
+                    ])
+                    ->make()
+            );
+        }
+
+        if (!$user->clientes()->exists()) {
+            $corteIds = $user->cortes()->pluck('id')->all();
+
+            $user->clientes()->saveMany(
+                Cliente::factory(12)
+                    ->state(fn () => [
+                        'user_id' => $user->id,
+                        'corte_favorito_id' => fake()->optional()->randomElement($corteIds),
                     ])
                     ->make()
             );

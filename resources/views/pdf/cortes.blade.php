@@ -2,43 +2,14 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <style>
-        body {
-            color: #222;
-            font-family: DejaVu Sans, sans-serif;
-            font-size: 12px;
-        }
-
-        h1 {
-            margin-bottom: 4px;
-            font-size: 20px;
-        }
-
-        .subtitle {
-            margin-bottom: 20px;
-            color: #666;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th,
-        td {
-            padding: 8px;
-            border: 1px solid #ccc;
-            text-align: left;
-        }
-
-        th {
-            background: #eee;
-        }
-
-        .price {
-            text-align: right;
-            white-space: nowrap;
-        }
+   <style>
+        body { color: #222; font-family: DejaVu Sans, sans-serif; font-size: 11px; }
+        h1 { margin-bottom: 4px; font-size: 20px; }
+        .subtitle { margin-bottom: 20px; color: #666; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 7px; border: 1px solid #ccc; text-align: left; }
+        th { background: #eee; }
+        .number { text-align: right; white-space: nowrap; }
     </style>
 </head>
 <body>

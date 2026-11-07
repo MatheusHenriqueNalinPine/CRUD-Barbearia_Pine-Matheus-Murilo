@@ -16,6 +16,9 @@
         <a href="{{ route('fornecedores.create') }}" class="btn btn-warning fw-bold mb-2 text-start">
             <i class="fa-solid fa-plus me-2"></i>Novo fornecedor
         </a>
+        <a href="{{ route('clientes.index') }}" class="btn btn-outline-light mb-2 text-start">
+            <i class="fa-solid fa-users me-2"></i>Clientes
+        </a>
         <a href="{{ route('lixeira') }}" class="btn btn-outline-light mb-2 text-start">
             <i class="fa-solid fa-trash me-2"></i>Lixeira
         </a>

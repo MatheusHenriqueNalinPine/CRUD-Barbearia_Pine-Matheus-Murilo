@@ -19,6 +19,10 @@
 			<i class="fa-solid fa-truck-field me-2"></i>Fornecedores
 		</a>
 
+		<a href="{{ route('clientes.index') }}" class="btn btn-outline-light mb-2 text-start">
+			<i class="fa-solid fa-users me-2"></i>Clientes
+		</a>
+
 		<a href="{{ route('lixeira') }}" class="btn btn-outline-light mb-2 text-start">
 			<i class="fa-solid fa-trash me-2"></i>Lixeira
 		</a>

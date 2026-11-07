@@ -21,4 +21,9 @@ class Corte extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function clientesFavoritos()
+    {
+        return $this->hasMany(Cliente::class, 'corte_favorito_id');
+    }
 }
