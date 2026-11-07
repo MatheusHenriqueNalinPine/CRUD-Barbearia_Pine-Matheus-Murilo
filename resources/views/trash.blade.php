@@ -61,7 +61,12 @@
                 </select>
                 <button class="btn btn-warning fw-bold" type="submit">Aplicar</button>
             </form>
-            {{ $cortes->links() }}
+            <div class="d-flex align-items-center flex-wrap gap-3">
+                <a href="{{ route('lixeira.cortes.pdf', ['order' => $order]) }}" class="btn btn-outline-danger">
+                    <i class="fa-solid fa-file-pdf me-1"></i>Gerar PDF
+                </a>
+                {{ $cortes->links() }}
+            </div>
         </div>
         @endif
 
@@ -83,7 +88,12 @@
                 </select>
                 <button class="btn btn-warning fw-bold" type="submit">Aplicar</button>
             </form>
-            {{ $produtos->links() }}
+            <div class="d-flex align-items-center flex-wrap gap-3">
+                <a href="{{ route('lixeira.produtos.pdf', ['order' => $order]) }}" class="btn btn-outline-danger">
+                    <i class="fa-solid fa-file-pdf me-1"></i>Gerar PDF
+                </a>
+                {{ $produtos->links() }}
+            </div>
         </div>
         @endif
 
@@ -105,7 +115,12 @@
                 </select>
                 <button class="btn btn-warning fw-bold" type="submit">Aplicar</button>
             </form>
-            {{ $fornecedores->links() }}
+            <div class="d-flex align-items-center flex-wrap gap-3">
+                <a href="{{ route('lixeira.fornecedores.pdf', ['order' => $order]) }}" class="btn btn-outline-danger">
+                    <i class="fa-solid fa-file-pdf me-1"></i>Gerar PDF
+                </a>
+                {{ $fornecedores->links() }}
+            </div>
         </div>
         @endif
         @endif

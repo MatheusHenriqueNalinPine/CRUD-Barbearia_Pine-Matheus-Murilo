@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Produto;
 use App\Models\Fornecedor;
 use App\Services\Operations;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
@@ -30,6 +31,29 @@ class ProdutoController extends Controller
             'search' => $search,
             'order' => $request->input('order') === 'oldest' ? 'oldest' : 'recent',
         ]);
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $userId = session('user')['id'];
+        $search = trim($request->input('search', ''));
+        $order = $request->input('order') === 'oldest' ? 'asc' : 'desc';
+
+        $produtos = Produto::with('fornecedor')
+            ->where('user_id', $userId)
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where('nome', 'like', "%{$search}%");
+            })
+            ->orderBy('created_at', $order)
+            ->orderBy('id', $order)
+            ->get();
+
+        return Pdf::loadView('pdf.produtos', [
+            'produtos' => $produtos,
+            'search' => $search,
+        ])
+            ->setPaper('a4', 'landscape')
+            ->download('lista-de-produtos.pdf');
     }
 
     public function create()

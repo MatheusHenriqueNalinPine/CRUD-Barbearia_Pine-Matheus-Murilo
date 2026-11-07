@@ -86,7 +86,12 @@
                 </select>
                 <button class="btn btn-warning fw-bold" type="submit">Aplicar</button>
             </form>
-            {{ $produtos->links() }}
+            <div class="d-flex align-items-center flex-wrap gap-3">
+                <a href="{{ route('produtos.pdf', array_filter(['search' => $search, 'order' => $order])) }}" class="btn btn-outline-danger">
+                    <i class="fa-solid fa-file-pdf me-1"></i>Gerar PDF
+                </a>
+                {{ $produtos->links() }}
+            </div>
         </div>
         @endif
     </div>

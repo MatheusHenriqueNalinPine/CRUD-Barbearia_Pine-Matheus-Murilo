@@ -36,7 +36,7 @@ class MainController extends Controller
         ]);
     }
 
-    public function exportPdf(Request $request)
+        public function exportPdf(Request $request)
     {
         $userId = session('user')['id'];
         $search = trim($request->input('search', ''));
@@ -56,6 +56,49 @@ class MainController extends Controller
         ])
             ->setPaper('a4', 'portrait')
             ->download('lista-de-cortes.pdf');
+    }
+
+    public function exportTrashedCutsPdf(Request $request)
+    {
+        $order = $request->input('order') === 'oldest' ? 'asc' : 'desc';
+        $cortes = Corte::onlyTrashed()
+            ->where('user_id', session('user')['id'])
+            ->orderBy('deleted_at', $order)
+            ->orderBy('id', $order)
+            ->get();
+
+        return Pdf::loadView('pdf.cortes_lixeira', ['cortes' => $cortes])
+            ->setPaper('a4', 'portrait')
+            ->download('lixeira-de-cortes.pdf');
+    }
+
+    public function exportTrashedProductsPdf(Request $request)
+    {
+        $order = $request->input('order') === 'oldest' ? 'asc' : 'desc';
+        $produtos = Produto::onlyTrashed()
+            ->where('user_id', session('user')['id'])
+            ->orderBy('deleted_at', $order)
+            ->orderBy('id', $order)
+            ->get();
+
+        return Pdf::loadView('pdf.produtos_lixeira', ['produtos' => $produtos])
+            ->setPaper('a4', 'landscape')
+            ->download('lixeira-de-produtos.pdf');
+    }
+
+    public function exportTrashedSuppliersPdf(Request $request)
+    {
+        $order = $request->input('order') === 'oldest' ? 'asc' : 'desc';
+        $fornecedores = Fornecedor::onlyTrashed()
+            ->withCount('produtos')
+            ->where('user_id', session('user')['id'])
+            ->orderBy('deleted_at', $order)
+            ->orderBy('id', $order)
+            ->get();
+
+        return Pdf::loadView('pdf.fornecedores_lixeira', ['fornecedores' => $fornecedores])
+            ->setPaper('a4', 'landscape')
+            ->download('lixeira-de-fornecedores.pdf');
     }
 
     public function newCorte()

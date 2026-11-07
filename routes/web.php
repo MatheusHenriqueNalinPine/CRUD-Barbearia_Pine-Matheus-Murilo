@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware([CheckIsLogged::class])->group(function () {
     Route::get('/', [MainController::class, 'index'])->name('home');
     Route::get('/cortes/pdf', [MainController::class, 'exportPdf'])->name('cortes.pdf');
+    Route::get('/lixeira/cortes/pdf', [MainController::class, 'exportTrashedCutsPdf'])->name('lixeira.cortes.pdf');
+    Route::get('/lixeira/produtos/pdf', [MainController::class, 'exportTrashedProductsPdf'])->name('lixeira.produtos.pdf');
+    Route::get('/lixeira/fornecedores/pdf', [MainController::class, 'exportTrashedSuppliersPdf'])->name('lixeira.fornecedores.pdf');
     Route::get('/new-corte', [MainController::class, 'newCorte'])->name('new');
     Route::post('/newCorteSubmit', [MainController::class, 'newCorteSubmit'])->name('newCorteSubmit');
     Route::get('/edit-corte/{id}', [MainController::class, 'editCorte'])->name('edit');
@@ -21,6 +24,7 @@ Route::middleware([CheckIsLogged::class])->group(function () {
     Route::get('/force-delete-corte/{id}', [MainController::class, 'forceDeleteCorte'])->name('forceDelete');
     Route::get('/restore-corte/{id}', [MainController::class, 'restoreCorte'])->name('restore');
     Route::get('/produtos', [ProdutoController::class, 'index'])->name('produtos.index');
+    Route::get('/produtos/pdf', [ProdutoController::class, 'exportPdf'])->name('produtos.pdf');
     Route::get('/new-produto', [ProdutoController::class, 'create'])->name('produtos.create');
     Route::post('/new-produto', [ProdutoController::class, 'store'])->name('produtos.store');
     Route::get('/edit-produto/{id}', [ProdutoController::class, 'edit'])->name('produtos.edit');
@@ -31,6 +35,7 @@ Route::middleware([CheckIsLogged::class])->group(function () {
     Route::get('/delete-produto-confirm/{id}', [ProdutoController::class, 'confirmForceDelete'])->name('produtos.delete.confirm');
     Route::get('/force-delete-produto/{id}', [ProdutoController::class, 'forceDelete'])->name('produtos.force-delete');
     Route::get('/fornecedores', [FornecedorController::class, 'index'])->name('fornecedores.index');
+    Route::get('/fornecedores/pdf', [FornecedorController::class, 'exportPdf'])->name('fornecedores.pdf');
     Route::get('/new-fornecedor', [FornecedorController::class, 'create'])->name('fornecedores.create');
     Route::post('/new-fornecedor', [FornecedorController::class, 'store'])->name('fornecedores.store');
     Route::get('/edit-fornecedor/{id}', [FornecedorController::class, 'edit'])->name('fornecedores.edit');

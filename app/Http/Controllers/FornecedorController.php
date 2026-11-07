@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Fornecedor;
 use App\Services\Operations;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -27,6 +28,29 @@ class FornecedorController extends Controller
             'search' => $search,
             'order' => $request->input('order') === 'oldest' ? 'oldest' : 'recent',
         ]);
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $userId = session('user')['id'];
+        $search = trim($request->input('search', ''));
+        $order = $request->input('order') === 'oldest' ? 'asc' : 'desc';
+
+        $fornecedores = Fornecedor::withCount('produtos')
+            ->where('user_id', $userId)
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where('nome', 'like', "%{$search}%");
+            })
+            ->orderBy('created_at', $order)
+            ->orderBy('id', $order)
+            ->get();
+
+        return Pdf::loadView('pdf.fornecedores', [
+            'fornecedores' => $fornecedores,
+            'search' => $search,
+        ])
+            ->setPaper('a4', 'landscape')
+            ->download('lista-de-fornecedores.pdf');
     }
 
     public function create()
