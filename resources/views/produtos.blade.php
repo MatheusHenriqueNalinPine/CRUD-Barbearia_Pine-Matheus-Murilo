@@ -54,7 +54,7 @@
         <div class="alert alert-danger" role="alert">{{ session('error') }}</div>
         @endif
 
-        @if($produtos->isEmpty())
+        @if($produtos->total() === 0)
         <div class="row mt-5">
             <div class="col text-center">
                 <p class="display-6 mb-5 text-secondary opacity-50">
@@ -73,6 +73,9 @@
                 @include('produto')
             </div>
             @endforeach
+        </div>
+        <div class="d-flex justify-content-center mt-4">
+            {{ $produtos->links() }}
         </div>
         @endif
     </div>

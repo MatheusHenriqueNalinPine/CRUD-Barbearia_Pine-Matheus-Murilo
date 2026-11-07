@@ -61,7 +61,7 @@
 			</form>
 		</div>
 
-		@if($cortes->isEmpty())
+		@if($cortes->total() === 0)
 		<div class="row mt-5">
 			<div class="col text-center">
 				<p class="display-6 mb-5 text-secondary opacity-50">
@@ -80,6 +80,9 @@
 				@include('corte')
 			</div>
 			@endforeach
+		</div>
+		<div class="d-flex justify-content-center mt-4">
+			{{ $cortes->links() }}
 		</div>
 		@endif
 

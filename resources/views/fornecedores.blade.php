@@ -50,7 +50,7 @@
             </form>
         </div>
 
-        @if($fornecedores->isEmpty())
+        @if($fornecedores->total() === 0)
         <div class="row mt-5">
             <div class="col text-center">
                 <p class="display-6 mb-5 text-secondary opacity-50">
@@ -69,6 +69,9 @@
                 @include('fornecedor')
             </div>
             @endforeach
+        </div>
+        <div class="d-flex justify-content-center mt-4">
+            {{ $fornecedores->links() }}
         </div>
         @endif
     </div>

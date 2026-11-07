@@ -27,8 +27,8 @@ class ProdutoFactory extends Factory
             'nome' => fake()->words(3, true),
             'descricao' => fake()->optional()->sentence(),
             'imagem' => null,
-            'preco' => fake()->randomFloat(2, 0, 999999.99),
-            'quantidade' => fake()->numberBetween(0, 1000000),
+            'preco' => fake()->randomFloat(2, 0, 100.00),
+            'quantidade' => fake()->numberBetween(0, 100),
         ];
     }
 

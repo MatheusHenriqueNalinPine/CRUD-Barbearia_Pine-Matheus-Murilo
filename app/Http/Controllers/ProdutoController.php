@@ -21,7 +21,8 @@ class ProdutoController extends Controller
                 $query->where('nome', 'like', "%{$search}%");
             })
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(9)
+            ->withQueryString();
 
         return view('produtos', [
             'produtos' => $produtos,

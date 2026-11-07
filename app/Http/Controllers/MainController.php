@@ -23,7 +23,8 @@ class MainController extends Controller
                 $query->where('nome_corte', 'like', "%{$search}%");
             })
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(9)
+            ->withQueryString();
 
         return view('home', [
             'cortes' => $cortes,
@@ -170,17 +171,20 @@ class MainController extends Controller
         $cortes = Corte::onlyTrashed()
             ->where('user_id', $userId)
             ->orderBy('deleted_at', 'desc')
-            ->get();
+            ->paginate(9, ['*'], 'cortes_page')
+            ->withQueryString();
 
         $produtos = Produto::onlyTrashed()
             ->where('user_id', $userId)
             ->orderBy('deleted_at', 'desc')
-            ->get();
+            ->paginate(9, ['*'], 'produtos_page')
+            ->withQueryString();
 
         $fornecedores = Fornecedor::onlyTrashed()
             ->where('user_id', $userId)
             ->orderBy('deleted_at', 'desc')
-            ->get();
+            ->paginate(9, ['*'], 'fornecedores_page')
+            ->withQueryString();
 
         return view('trash', [
             'cortes' => $cortes,

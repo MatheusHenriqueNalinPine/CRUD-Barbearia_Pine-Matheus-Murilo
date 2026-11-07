@@ -18,7 +18,8 @@ class FornecedorController extends Controller
                 $query->where('nome', 'like', "%{$search}%");
             })
             ->orderBy('nome')
-            ->get();
+            ->paginate(9)
+            ->withQueryString();
 
         return view('fornecedores', [
             'fornecedores' => $fornecedores,

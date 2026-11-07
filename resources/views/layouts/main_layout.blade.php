@@ -149,6 +149,23 @@
             color: #f8d7da;
             border-radius: 3px;
         }
+
+        .pagination .page-link {
+            background-color: #101010;
+            border-color: #343a40;
+            color: #f5f5f5;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #d9b654;
+            border-color: #d9b654;
+            color: #111;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            background-color: #101010;
+            color: #888;
+        }
     </style>
 </head>
 <body>

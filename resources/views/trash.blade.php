@@ -42,30 +42,54 @@
             </div>
         </div>
 
-        @if($cortes->isEmpty() && $produtos->isEmpty() && $fornecedores->isEmpty())
+        @if($cortes->total() === 0 && $produtos->total() === 0 && $fornecedores->total() === 0)
         <div class="row mt-5">
             <div class="col text-center">
                 <p class="display-6 mb-5 text-secondary opacity-50">Você não possui itens na lixeira</p>
             </div>
         </div>
         @else
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+        @if($cortes->total() > 0)
+        <h2 class="h5 mb-3">Cortes</h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-3">
             @foreach ($cortes as $corte)
             <div class="col">
                 @include('corte_trash')
             </div>
             @endforeach
+        </div>
+        <div class="d-flex justify-content-center mb-4">
+            {{ $cortes->links() }}
+        </div>
+        @endif
+
+        @if($produtos->total() > 0)
+        <h2 class="h5 mb-3">Produtos</h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-3">
             @foreach ($produtos as $produto)
             <div class="col">
                 @include('produto_trash')
             </div>
             @endforeach
+        </div>
+        <div class="d-flex justify-content-center mb-4">
+            {{ $produtos->links() }}
+        </div>
+        @endif
+
+        @if($fornecedores->total() > 0)
+        <h2 class="h5 mb-3">Fornecedores</h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-3">
             @foreach ($fornecedores as $fornecedor)
             <div class="col">
                 @include('fornecedor_trash')
             </div>
             @endforeach
         </div>
+        <div class="d-flex justify-content-center mb-4">
+            {{ $fornecedores->links() }}
+        </div>
+        @endif
         @endif
 
     </div>
