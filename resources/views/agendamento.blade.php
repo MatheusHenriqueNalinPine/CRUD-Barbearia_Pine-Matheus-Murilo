@@ -14,7 +14,7 @@
                 <p class="mb-2 text-white fs-5 text-break"><strong>Barbeiro:</strong> {{ $agendamento->barbeiro->name ?? $agendamento->barbeiro->username ?? 'Não informado' }}</p>
             @endif
 
-            <p class="mb-1" style="color: #adb5bd;"><strong>Corte:</strong> {{ $agendamento->corte->nome ?? 'Não informado' }}</p>
+            <p class="mb-1" style="color: #adb5bd;"><strong>Corte:</strong> {{ $agendamento->corte->nome_corte ?? 'Não informado' }}</p>
             <p class="mb-1" style="color: #adb5bd;"><strong>Preço:</strong> R$ {{ number_format($agendamento->corte->preco ?? 0, 2, ',', '.') }}</p>
             <p class="mb-1" style="color: #adb5bd;"><strong>Data e Hora:</strong> {{ \Carbon\Carbon::parse($agendamento->data_hora)->format('d/m/Y H:i') }}</p>
             

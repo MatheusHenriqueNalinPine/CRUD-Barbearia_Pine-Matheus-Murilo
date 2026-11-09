@@ -19,7 +19,7 @@
         <option value="">Selecione um estilo de corte</option>
         @foreach($cortes as $corte)
         <option value="{{ \App\Services\Operations::encryptId($corte->id) }}" @selected((string) old('corte_id', isset($agendamento) ? \App\Services\Operations::encryptId($agendamento->corte_id) : '') === (string) \App\Services\Operations::encryptId($corte->id))>
-            {{ $corte->nome }} - R$ {{ number_format($corte->preco, 2, ',', '.') }}
+            {{ $corte->nome_corte }} - R$ {{ number_format($corte->preco, 2, ',', '.') }}
         </option>
         @endforeach
     </select>

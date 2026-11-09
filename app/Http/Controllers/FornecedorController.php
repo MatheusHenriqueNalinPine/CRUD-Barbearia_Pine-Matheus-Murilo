@@ -14,8 +14,8 @@ class FornecedorController extends Controller
     {
         $search = trim($request->input('search', ''));
         $order = $request->input('order') === 'oldest' ? 'asc' : 'desc';
+
         $fornecedores = Fornecedor::withCount('produtos')
-            ->where('user_id', session('user')['id'])
             ->when($search !== '', function ($query) use ($search) {
                 $query->where('nome', 'like', "%{$search}%");
             })
@@ -32,12 +32,10 @@ class FornecedorController extends Controller
 
     public function exportPdf(Request $request)
     {
-        $userId = session('user')['id'];
         $search = trim($request->input('search', ''));
         $order = $request->input('order') === 'oldest' ? 'asc' : 'desc';
 
         $fornecedores = Fornecedor::withCount('produtos')
-            ->where('user_id', $userId)
             ->when($search !== '', function ($query) use ($search) {
                 $query->where('nome', 'like', "%{$search}%");
             })
@@ -61,6 +59,7 @@ class FornecedorController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate($this->rules(), $this->messages());
+        
         $validated['user_id'] = session('user')['id'];
 
         Fornecedor::create($validated);
@@ -70,7 +69,7 @@ class FornecedorController extends Controller
 
     public function edit($id)
     {
-        $fornecedor = $this->findOwnedSupplier($id);
+        $fornecedor = $this->findSupplier($id);
 
         if (!$fornecedor) {
             return redirect()->route('fornecedores.index');
@@ -81,7 +80,7 @@ class FornecedorController extends Controller
 
     public function update(Request $request, $id)
     {
-        $fornecedor = $this->findOwnedSupplier($id);
+        $fornecedor = $this->findSupplier($id);
 
         if (!$fornecedor) {
             return redirect()->route('fornecedores.index');
@@ -94,7 +93,7 @@ class FornecedorController extends Controller
 
     public function destroy($id)
     {
-        $fornecedor = $this->findOwnedSupplier($id);
+        $fornecedor = $this->findSupplier($id);
 
         if ($fornecedor) {
             DB::transaction(function () use ($fornecedor) {
@@ -108,7 +107,7 @@ class FornecedorController extends Controller
 
     public function restore($id)
     {
-        $fornecedor = $this->findOwnedSupplier($id, true);
+        $fornecedor = $this->findSupplier($id, true);
 
         if ($fornecedor) {
             $fornecedor->restore();
@@ -119,7 +118,7 @@ class FornecedorController extends Controller
 
     public function confirmForceDelete($id)
     {
-        $fornecedor = $this->findOwnedSupplier($id, true);
+        $fornecedor = $this->findSupplier($id, true);
 
         if (!$fornecedor) {
             return redirect()->route('lixeira');
@@ -130,7 +129,7 @@ class FornecedorController extends Controller
 
     public function forceDelete($id)
     {
-        $fornecedor = $this->findOwnedSupplier($id, true);
+        $fornecedor = $this->findSupplier($id, true);
 
         if ($fornecedor) {
             $fornecedor->forceDelete();
@@ -139,7 +138,7 @@ class FornecedorController extends Controller
         return redirect()->route('lixeira');
     }
 
-    private function findOwnedSupplier($id, bool $withTrashed = false): ?Fornecedor
+    private function findSupplier($id, bool $withTrashed = false): ?Fornecedor
     {
         $decryptedId = Operations::decryptId($id);
 
@@ -151,7 +150,6 @@ class FornecedorController extends Controller
 
         return $query
             ->where('id', $decryptedId)
-            ->where('user_id', session('user')['id'])
             ->first();
     }
 
