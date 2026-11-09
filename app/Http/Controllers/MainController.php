@@ -15,29 +15,29 @@ use Illuminate\Support\Facades\Storage;
 class MainController extends Controller
 {
     public function index(Request $request)
-    {
-        $userId = session('user')['id'];
-        $user = User::find($userId);
-        $search = trim($request->input('search', ''));
-        $order = $request->input('order') === 'oldest' ? 'asc' : 'desc';
+{
+    $userId = session('user')['id'];
+    $user = User::find($userId);
+    $search = trim($request->input('search', ''));
+    $order = $request->input('order') === 'oldest' ? 'asc' : 'desc';
 
-        $cortes = Corte::where('user_id', $userId)
-            ->when($search !== '', function ($query) use ($search) {
-                $query->where('nome_corte', 'like', "%{$search}%");
-            })
-            ->orderBy('created_at', $order)
-            ->paginate(9)
-            ->withQueryString();
+    $cortes = Corte::with('user')
+        ->when($search !== '', function ($query) use ($search) {
+            $query->where('nome_corte', 'like', "%{$search}%");
+        })
+        ->orderBy('created_at', $order)
+        ->paginate(9)
+        ->withQueryString();
 
-        return view('home', [
-            'cortes' => $cortes,
-            'user' => $user,
-            'search' => $search,
-            'order' => $request->input('order') === 'oldest' ? 'oldest' : 'recent',
-        ]);
-    }
+    return view('home', [
+        'cortes' => $cortes,
+        'user' => $user,
+        'search' => $search,
+        'order' => $request->input('order') === 'oldest' ? 'oldest' : 'recent',
+    ]);
+}
 
-        public function exportPdf(Request $request)
+    public function exportPdf(Request $request)
     {
         $userId = session('user')['id'];
         $search = trim($request->input('search', ''));
@@ -105,9 +105,8 @@ class MainController extends Controller
     public function exportTrashedClientsPdf(Request $request)
     {
         $order = $request->input('order') === 'oldest' ? 'asc' : 'desc';
-        $clientes = Cliente::onlyTrashed()
-            ->with('corteFavorito')
-            ->where('user_id', session('user')['id'])
+        $clientes = User::onlyTrashed()
+            ->where('role', 'cliente')
             ->orderBy('deleted_at', $order)
             ->orderBy('id', $order)
             ->get();
@@ -271,9 +270,8 @@ class MainController extends Controller
             ->paginate(9, ['*'], 'fornecedores_page')
             ->withQueryString();
 
-        $clientes = Cliente::onlyTrashed()
-            ->with('corteFavorito')
-            ->where('user_id', $userId)
+        $clientes = User::onlyTrashed()
+            ->where('role', 'cliente')
             ->orderBy('deleted_at', $order)
             ->paginate(9, ['*'], 'clientes_page')
             ->withQueryString();

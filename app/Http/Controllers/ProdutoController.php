@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Produto;
 use App\Models\Fornecedor;
+use App\Models\User;
 use App\Services\Operations;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -12,13 +13,14 @@ use Illuminate\Support\Facades\Storage;
 
 class ProdutoController extends Controller
 {
-     public function index(Request $request)
+    public function index(Request $request)
     {
         $userId = session('user')['id'];
+        $user = User::find($userId);
         $search = trim($request->input('search', ''));
         $order = $request->input('order') === 'oldest' ? 'asc' : 'desc';
 
-        $produtos = Produto::with('fornecedor')->where('user_id', $userId)
+        $produtos = Produto::with(['fornecedor', 'user'])
             ->when($search !== '', function ($query) use ($search) {
                 $query->where('nome', 'like', "%{$search}%");
             })
@@ -28,6 +30,7 @@ class ProdutoController extends Controller
 
         return view('produtos', [
             'produtos' => $produtos,
+            'user' => $user,
             'search' => $search,
             'order' => $request->input('order') === 'oldest' ? 'oldest' : 'recent',
         ]);

@@ -2,36 +2,8 @@
 
 @section('content')
 <div class="d-flex" style="min-height: 100vh;">
-    <div class="bg-dark text-light p-3 d-flex flex-column" style="width: 220px; min-height: 100vh;">
-        <div class="text-center mb-4">
-            <img src="{{ asset('assets/images/icon.png') }}" alt="BarbeariaPine" class="img-fluid mb-2" style="max-width: 120px;">
-        </div>
-
-        <a href="{{ route('home') }}" class="btn btn-outline-light mb-2 text-start">
-            <i class="fa-solid fa-scissors me-2"></i>Cortes
-        </a>
-        <a href="{{ route('produtos.index') }}" class="btn btn-outline-light mb-2 text-start">
-            <i class="fa-solid fa-box-open me-2"></i>Produtos
-        </a>
-        <a href="{{ route('fornecedores.create') }}" class="btn btn-warning fw-bold mb-2 text-start">
-            <i class="fa-solid fa-plus me-2"></i>Novo fornecedor
-        </a>
-        <a href="{{ route('clientes.index') }}" class="btn btn-outline-light mb-2 text-start">
-            <i class="fa-solid fa-users me-2"></i>Clientes
-        </a>
-        <a href="{{ route('lixeira') }}" class="btn btn-outline-light mb-2 text-start">
-            <i class="fa-solid fa-trash me-2"></i>Lixeira
-        </a>
-
-        <div class="mt-auto">
-            <div class="text-center text-secondary small mb-2">
-                <i class="fa-solid fa-user me-1"></i>{{ session('user')['username'] }}
-            </div>
-            <a href="{{ route('logout') }}" class="btn btn-danger w-100 text-start">
-                <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
-            </a>
-        </div>
-    </div>
+    
+    @include('sidebar')
 
     <div class="flex-fill p-4 bg-black text-light">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
@@ -60,7 +32,7 @@
                     @if($search !== '')
                         Nenhum fornecedor "{{ $search }}" encontrado
                     @else
-                        Você não possui fornecedores cadastrados
+                        A barbearia não possui fornecedores cadastrados
                     @endif
                 </p>
             </div>

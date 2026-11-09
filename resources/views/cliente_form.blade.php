@@ -1,35 +1,39 @@
 <div class="mb-3">
-    <label class="form-label" for="nome">Nome do cliente</label>
-    <input id="nome" type="text" class="form-control bg-black text-light border-secondary" name="nome" value="{{ old('nome', isset($cliente) ? $cliente->nome : '') }}" maxlength="100" required>
-    @error('nome')
+    <label class="form-label" for="username">Nome de usuário</label>
+    <input id="username" type="text" class="form-control bg-black text-light border-secondary" name="username" value="{{ old('username', isset($cliente) ? $cliente->username : '') }}" maxlength="100" required>
+    @error('username')
         <div class="text-danger small mt-1">{{ $message }}</div>
     @enderror
 </div>
 
 <div class="mb-3">
-    <label class="form-label" for="tipo_cabelo">Tipo de cabelo</label>
-    <select id="tipo_cabelo" class="form-select bg-black text-light border-secondary" name="tipo_cabelo" required>
-        <option value="">Selecione o tipo de cabelo</option>
-        @foreach($tiposCabelo as $valor => $rotulo)
-        <option value="{{ $valor }}" @selected(old('tipo_cabelo', isset($cliente) ? $cliente->tipo_cabelo : '') === $valor)>{{ $rotulo }}</option>
-        @endforeach
-    </select>
-    @error('tipo_cabelo')
+    <label class="form-label" for="email">E-mail</label>
+    <input id="email" type="email" class="form-control bg-black text-light border-secondary" name="email" value="{{ old('email', isset($cliente) ? $cliente->email : '') }}" maxlength="255" required>
+    @error('email')
         <div class="text-danger small mt-1">{{ $message }}</div>
     @enderror
 </div>
 
 <div class="mb-3">
-    <label class="form-label" for="corte_favorito_id">Corte favorito</label>
-    <select id="corte_favorito_id" class="form-select bg-black text-light border-secondary" name="corte_favorito_id">
-        <option value="">Sem corte favorito</option>
-        @foreach($cortes as $corte)
-        <option value="{{ $corte->id }}" @selected((string) old('corte_favorito_id', isset($cliente) ? $cliente->corte_favorito_id : '') === (string) $corte->id)>
-            {{ $corte->nome_corte }}
-        </option>
-        @endforeach
+    <label class="form-label" for="password">
+        Senha 
+        @isset($cliente)
+            <span class="text-muted small">(Deixe em branco para manter a atual)</span>
+        @endisset
+    </label>
+    <input id="password" type="password" class="form-control bg-black text-light border-secondary" name="password" @isset($cliente) @else required @endisset minlength="6">
+    @error('password')
+        <div class="text-danger small mt-1">{{ $message }}</div>
+    @enderror
+</div>
+
+<div class="mb-3">
+    <label class="form-label" for="role">Cargo / Papel</label>
+    <select name="role" id="role" class="form-select bg-black text-light border-secondary">
+        <option value="cliente" @selected(old('role', isset($cliente) ? $cliente->role : '') === 'cliente')>Cliente</option>
+        <option value="barbeiro" @selected(old('role', isset($cliente) ? $cliente->role : '') === 'barbeiro')>Barbeiro</option>
     </select>
-    @error('corte_favorito_id')
+    @error('role')
         <div class="text-danger small mt-1">{{ $message }}</div>
     @enderror
 </div>

@@ -10,8 +10,10 @@
                         <i class="fa-solid fa-triangle-exclamation text-danger fs-1"></i>
                     </span>
                 </div>
-                <h4 class="text-white mb-2">{{ $cliente->nome }}</h4>
-                <p class="mb-4" style="color: #adb5bd;">Tem certeza que deseja excluir este cliente permanentemente? Esta ação não poderá ser desfeita.</p>
+
+                <h4 class="text-white mb-2">{{ $cliente->name }}</h4>
+                <p class="mb-4" style="color: #adb5bd;">Tem certeza que deseja excluir este cliente permanentemente? Essa ação não poderá ser desfeita.</p>
+
                 <div class="d-flex justify-content-center gap-3">
                     <a href="{{ route('lixeira') }}" class="btn btn-outline-light px-4 rounded-3">
                         <i class="fa-solid fa-xmark me-2"></i>Cancelar

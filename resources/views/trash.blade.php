@@ -2,41 +2,13 @@
 
 @section('content')
 <div class="d-flex" style="min-height: 100vh;">
-    <div class="bg-dark text-light p-3 d-flex flex-column" style="width: 220px; min-height: 100vh;">
-        <div class="text-center mb-4">
-            <img src="{{ asset('assets/images/icon.png') }}" alt="BarbeariaPine" class="img-fluid mb-2" style="max-width: 120px;">
-        </div>
-
-        <a href="{{ route('home') }}" class="btn btn-outline-light mb-2 text-start">
-            <i class="fa-solid fa-house me-2"></i>Home
-        </a>
-
-        <a href="{{ route('produtos.index') }}" class="btn btn-outline-light mb-2 text-start">
-            <i class="fa-solid fa-box-open me-2"></i>Produtos
-        </a>
-
-        <a href="{{ route('fornecedores.index') }}" class="btn btn-outline-light mb-2 text-start">
-            <i class="fa-solid fa-truck-field me-2"></i>Fornecedores
-        </a>
-        <a href="{{ route('clientes.index') }}" class="btn btn-outline-light mb-2 text-start">
-            <i class="fa-solid fa-users me-2"></i>Clientes
-        </a>
-
-        <div class="mt-auto">
-            <div class="text-center text-secondary small mb-2">
-                <i class="fa-solid fa-user me-1"></i>{{ session('user')['username'] }}
-            </div>
-            <a href="{{ route('logout') }}" class="btn btn-danger w-100 text-start">
-                <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
-            </a>
-        </div>
-    </div>
+    
+    @include('sidebar')
 
     <div class="flex-fill p-4 bg-black text-light">
 
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
             <h1 class="h3 mb-0">Lixeira</h1>
-
         </div>
 
         @if($cortes->total() === 0 && $produtos->total() === 0 && $fornecedores->total() === 0 && $clientes->total() === 0)
@@ -46,12 +18,14 @@
             </div>
         </div>
         @else
+        
+        {{-- Cortes na Lixeira --}}
         @if($cortes->total() > 0)
         <h2 class="h5 mb-3">Cortes</h2>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-3">
             @foreach ($cortes as $corte)
             <div class="col">
-                @include('corte_trash')
+                @include('corte', ['isTrash' => true])
             </div>
             @endforeach
         </div>
@@ -73,12 +47,13 @@
         </div>
         @endif
 
+        {{-- Produtos na Lixeira --}}
         @if($produtos->total() > 0)
         <h2 class="h5 mb-3">Produtos</h2>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-3">
             @foreach ($produtos as $produto)
             <div class="col">
-                @include('produto_trash')
+                @include('produto', ['isTrash' => true])
             </div>
             @endforeach
         </div>
@@ -100,12 +75,13 @@
         </div>
         @endif
 
+        {{-- Fornecedores na Lixeira --}}
         @if($fornecedores->total() > 0)
         <h2 class="h5 mb-3">Fornecedores</h2>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-3">
             @foreach ($fornecedores as $fornecedor)
             <div class="col">
-                @include('fornecedor_trash')
+                @include('fornecedor', ['isTrash' => true])
             </div>
             @endforeach
         </div>
@@ -127,12 +103,13 @@
         </div>
         @endif
 
+        {{-- Clientes na Lixeira --}}
         @if($clientes->total() > 0)
         <h2 class="h5 mb-3">Clientes</h2>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-3">
             @foreach ($clientes as $cliente)
             <div class="col">
-                @include('cliente_trash')
+                @include('cliente', ['isTrash' => true])
             </div>
             @endforeach
         </div>
