@@ -1,4 +1,4 @@
-# Passo a passo para utilizar este sistema WEB no seu computador:
+# Passo a passo para iniciar essa aplicação no seu computador:
 
 1- Copie o link HTTPS do repositório GitHub do projeto;
 
