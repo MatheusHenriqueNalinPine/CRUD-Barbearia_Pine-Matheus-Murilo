@@ -74,6 +74,9 @@
                 <a href="{{ route('produtos.pdf', array_filter(['search' => $search, 'order' => $order])) }}" class="btn btn-outline-danger">
                     <i class="fa-solid fa-file-pdf me-1"></i>Gerar PDF
                 </a>
+                <a href="{{ route('produtos.excel', array_filter(['search' => $search, 'order' => $order])) }}" class="btn btn-outline-success">
+                    <i class="fa-solid fa-file-excel me-1"></i>Gerar Excel
+                </a>
                 @endif
                 {{ $produtos->links() }}
             </div>

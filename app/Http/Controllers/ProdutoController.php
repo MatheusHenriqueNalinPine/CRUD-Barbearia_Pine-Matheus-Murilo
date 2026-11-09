@@ -38,12 +38,10 @@ class ProdutoController extends Controller
 
     public function exportPdf(Request $request)
     {
-        $userId = session('user')['id'];
         $search = trim($request->input('search', ''));
         $order = $request->input('order') === 'oldest' ? 'asc' : 'desc';
 
         $produtos = Produto::with('fornecedor')
-            ->where('user_id', $userId)
             ->when($search !== '', function ($query) use ($search) {
                 $query->where('nome', 'like', "%{$search}%");
             })
@@ -57,6 +55,49 @@ class ProdutoController extends Controller
         ])
             ->setPaper('a4', 'landscape')
             ->download('lista-de-produtos.pdf');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $search = trim($request->input('search', ''));
+        $order = $request->input('order') === 'oldest' ? 'asc' : 'desc';
+
+        $produtos = Produto::with('fornecedor')
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where('nome', 'like', "%{$search}%");
+            })
+            ->orderBy('created_at', $order)
+            ->orderBy('id', $order)
+            ->get();
+
+        return response()->streamDownload(function () use ($produtos) {
+            $output = fopen('php://output', 'w');
+            fwrite($output, "\xEF\xBB\xBF");
+
+            fputcsv($output, [
+                'Produto',
+                'Fornecedor',
+                'Descrição',
+                'Preço',
+                'Estoque',
+                'Cadastrado em',
+            ], ';', '"', '');
+
+            foreach ($produtos as $produto) {
+                fputcsv($output, [
+                    $this->excelSafeText($produto->nome),
+                    $this->excelSafeText($produto->fornecedor?->nome ?? 'Não informado'),
+                    $this->excelSafeText($produto->descricao ?? ''),
+                    number_format((float) $produto->preco, 2, ',', ''),
+                    $produto->quantidade,
+                    $produto->created_at?->format('d/m/Y'),
+                ], ';', '"', '');
+            }
+
+            fclose($output);
+        }, 'lista-de-produtos.csv', [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+        ]);
     }
 
     public function create()
@@ -245,6 +286,13 @@ class ProdutoController extends Controller
         return Fornecedor::where('user_id', session('user')['id'])
             ->orderBy('nome')
             ->get();
+    }
+
+    private function excelSafeText(string $value): string
+    {
+        return preg_match('/^[\t\r\n ]*[=+\-@]/', $value) === 1
+            ? "'" . $value
+            : $value;
     }
 
     private function messages(): array

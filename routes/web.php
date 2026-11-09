@@ -30,6 +30,7 @@ Route::middleware([CheckIsLogged::class])->group(function () {
 
     Route::get('/produtos', [ProdutoController::class, 'index'])->name('produtos.index');
     Route::get('/produtos/pdf', [ProdutoController::class, 'exportPdf'])->name('produtos.pdf');
+    Route::get('/produtos/excel', [ProdutoController::class, 'exportExcel'])->name('produtos.excel');
     Route::get('/new-produto', [ProdutoController::class, 'create'])->name('produtos.create');
     Route::post('/new-produto', [ProdutoController::class, 'store'])->name('produtos.store');
     Route::get('/edit-produto/{id}', [ProdutoController::class, 'edit'])->name('produtos.edit');
