@@ -16,11 +16,15 @@
 
 8- Entre na .env e apague os "#" dessas seguintes linhas:
 
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=laravel
-DB_USERNAME=root
-DB_PASSWORD=
+- DB_HOST=127.0.0.1
+  
+- DB_PORT=3306
+  
+- DB_DATABASE=laravel
+
+- DB_USERNAME=root
+
+- DB_PASSWORD=
 
 10- Em "DB_DATABASE", em frente ao sinal de igual coloque o nome que você deseja dar para a sua database;
 
@@ -28,9 +32,11 @@ DB_PASSWORD=
 
 12- Agora modifique o arquivo colocando "file" no lugar de "database" nas linhas:
 
-SESSION_DRIVER=database
-QUEUE_CONNECTION=database
-CACHE_STORE=database
+- SESSION_DRIVER=database
+  
+- QUEUE_CONNECTION=database
+  
+- CACHE_STORE=database
 
 Execute CTRL + S para salvar as modificações;
 
