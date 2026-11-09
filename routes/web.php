@@ -19,6 +19,7 @@ Route::middleware([CheckIsLogged::class])->group(function () {
 
     Route::get('/', [MainController::class, 'index'])->name('home');
     Route::get('/cortes/pdf', [MainController::class, 'exportPdf'])->name('cortes.pdf');
+    Route::get('/cortes/excel', [MainController::class, 'exportExcel'])->name('cortes.excel');
     Route::get('/new-corte', [MainController::class, 'newCorte'])->name('new');
     Route::post('/newCorteSubmit', [MainController::class, 'newCorteSubmit'])->name('newCorteSubmit');
     Route::get('/edit-corte/{id}', [MainController::class, 'editCorte'])->name('edit');

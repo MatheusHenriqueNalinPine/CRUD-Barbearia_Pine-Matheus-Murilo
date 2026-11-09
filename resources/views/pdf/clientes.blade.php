@@ -21,17 +21,16 @@
         Gerado em {{ now()->format('d/m/Y H:i') }}
     </div>
     <table>
-        <thead><tr><th>Nome</th><th>Tipo de cabelo</th><th>Corte favorito</th><th>Cadastrado em</th></tr></thead>
+        <thead><tr><th>Nome</th><th>Tipo de cabelo</th><th>Cadastrado em</th></tr></thead>
         <tbody>
             @forelse($clientes as $cliente)
             <tr>
                 <td>{{ $cliente->nome }}</td>
                 <td>{{ \App\Models\Cliente::TIPOS_CABELO[$cliente->tipo_cabelo] }}</td>
-                <td>{{ $cliente->corteFavorito?->nome_corte ?? 'Não informado' }}</td>
                 <td>{{ $cliente->created_at?->format('d/m/Y') }}</td>
             </tr>
             @empty
-            <tr><td colspan="4">Nenhum cliente encontrado.</td></tr>
+            <tr><td colspan="3">Nenhum cliente encontrado.</td></tr>
             @endforelse
         </tbody>
     </table>

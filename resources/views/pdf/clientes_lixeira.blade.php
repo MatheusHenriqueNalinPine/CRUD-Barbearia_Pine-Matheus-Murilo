@@ -15,17 +15,16 @@
     <h1>Clientes na lixeira</h1>
     <div class="subtitle">{{ $clientes->count() }} {{ $clientes->count() === 1 ? 'cliente' : 'clientes' }} · Gerado em {{ now()->format('d/m/Y H:i') }}</div>
     <table>
-        <thead><tr><th>Nome</th><th>Tipo de cabelo</th><th>Corte favorito</th><th>Excluído em</th></tr></thead>
+        <thead><tr><th>Nome</th><th>Tipo de cabelo</th><th>Excluído em</th></tr></thead>
         <tbody>
             @forelse($clientes as $cliente)
             <tr>
                 <td>{{ $cliente->nome }}</td>
                 <td>{{ \App\Models\Cliente::TIPOS_CABELO[$cliente->tipo_cabelo] }}</td>
-                <td>{{ $cliente->corteFavorito?->nome_corte ?? 'Não informado' }}</td>
                 <td>{{ $cliente->deleted_at?->format('d/m/Y') }}</td>
             </tr>
             @empty
-            <tr><td colspan="4">Nenhum cliente na lixeira.</td></tr>
+            <tr><td colspan="3">Nenhum cliente na lixeira.</td></tr>
             @endforelse
         </tbody>
     </table>

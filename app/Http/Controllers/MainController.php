@@ -59,6 +59,48 @@ class MainController extends Controller
             ->download('lista-de-cortes.pdf');
     }
 
+    public function exportExcel(Request $request)
+    {
+        $userId = session('user')['id'];
+        $search = trim($request->input('search', ''));
+        $order = $request->input('order') === 'oldest' ? 'asc' : 'desc';
+
+        $cortes = Corte::where('user_id', $userId)
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where('nome_corte', 'like', "%{$search}%");
+            })
+            ->orderBy('created_at', $order)
+            ->orderBy('id', $order)
+            ->get();
+
+        return response()->streamDownload(function () use ($cortes) {
+            $output = fopen('php://output', 'w');
+
+            if ($output === false) {
+                throw new \RuntimeException('Não foi possível gerar o arquivo CSV.');
+            }
+
+            fwrite($output, "\xEF\xBB\xBF");
+            fputcsv($output, ['Nome do corte', 'Preço', 'Cadastrado em'], ';', '"', '');
+
+            foreach ($cortes as $corte) {
+                $nome = preg_match('/^[\t\r\n ]*[=+\-@]/', $corte->nome_corte) === 1
+                    ? "'" . $corte->nome_corte
+                    : $corte->nome_corte;
+
+                fputcsv($output, [
+                    $nome,
+                    number_format((float) $corte->preco, 2, ',', ''),
+                    $corte->created_at?->format('d/m/Y'),
+                ], ';', '"', '');
+            }
+
+            fclose($output);
+        }, 'lista-de-cortes.csv', [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+        ]);
+    }
+
     public function exportTrashedCutsPdf(Request $request)
     {
         $order = $request->input('order') === 'oldest' ? 'asc' : 'desc';
