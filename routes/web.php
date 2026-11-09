@@ -7,11 +7,15 @@ use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\PerfilController;
 use App\Http\Middleware\CheckIsLogged;
 use App\Http\Middleware\CheckIsNotLogged;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware([CheckIsLogged::class])->group(function () {
+
+    Route::get('/perfil', [PerfilController::class, 'edit'])->name('perfil.edit');
+    Route::post('/perfil', [PerfilController::class, 'update'])->name('perfil.update');
 
     Route::get('/', [MainController::class, 'index'])->name('home');
     Route::get('/cortes/pdf', [MainController::class, 'exportPdf'])->name('cortes.pdf');
@@ -30,7 +34,7 @@ Route::middleware([CheckIsLogged::class])->group(function () {
     Route::post('/new-produto', [ProdutoController::class, 'store'])->name('produtos.store');
     Route::get('/edit-produto/{id}', [ProdutoController::class, 'edit'])->name('produtos.edit');
     Route::post('/edit-produto/{id}', [ProdutoController::class, 'update'])->name('produtos.update');
-    Route::post('/produto/{id}/estoque/{operacao}', [ProdutoController::class, 'adjustStock'])->name('produtos.stock.adjust');
+    Route::post('/produto/estoque/{operacao}', [ProdutoController::class, 'adjustStock'])->name('produtos.stock.adjust');
     Route::get('/delete-produto/{id}', [ProdutoController::class, 'destroy'])->name('produtos.destroy');
     Route::get('/restore-produto/{id}', [ProdutoController::class, 'restore'])->name('produtos.restore');
     Route::get('/delete-produto-confirm/{id}', [ProdutoController::class, 'confirmForceDelete'])->name('produtos.delete.confirm');

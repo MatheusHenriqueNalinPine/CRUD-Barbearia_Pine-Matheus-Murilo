@@ -116,20 +116,32 @@ class ProdutoController extends Controller
         return redirect()->route('produtos.index');
     }
 
-    public function adjustStock($id, string $operacao)
+    public function adjustStock(Request $request, string $operacao)
     {
         if (!in_array($operacao, ['aumentar', 'diminuir'], true)) {
             abort(404);
         }
 
-        $produto = $this->findOwnedProduct($id);
+        $user = User::find(session('user.id'));
+        abort_unless($user?->isBarbeiro(), 403);
+
+        $request->validate([
+            'produto_id' => ['required', 'string'],
+        ]);
+
+        $decryptedId = Operations::decryptId($request->input('produto_id'));
+
+        if (!is_numeric($decryptedId)) {
+            return redirect()->route('produtos.index');
+        }
+
+        $produto = Produto::find($decryptedId);
 
         if (!$produto) {
             return redirect()->route('produtos.index');
         }
 
-        $query = Produto::where('id', $produto->id)
-            ->where('user_id', session('user')['id']);
+        $query = Produto::whereKey($produto->id);
 
         if ($operacao === 'aumentar') {
             $alterados = $query->where('quantidade', '<', 1000000)->increment('quantidade');
@@ -143,7 +155,7 @@ class ProdutoController extends Controller
                 : 'O estoque não pode ficar abaixo de zero.');
         }
 
-        return back();
+        return back()->with('success', 'Estoque atualizado com sucesso.');
     }
 
     public function destroy($id)

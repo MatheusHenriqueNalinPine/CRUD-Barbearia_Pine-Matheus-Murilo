@@ -48,14 +48,16 @@
                 <i class="fa-regular fa-trash-can me-1"></i>Excluir Permanente
             </a>
         @else
-            <form action="{{ route('produtos.stock.adjust', ['id' => \App\Services\Operations::encryptId($produto->id), 'operacao' => 'aumentar']) }}" method="POST">
+            <form action="{{ route('produtos.stock.adjust', ['operacao' => 'aumentar']) }}" method="POST">
                 @csrf
+                <input type="hidden" name="produto_id" value="{{ \App\Services\Operations::encryptId($produto->id) }}">
                 <button type="submit" class="btn btn-sm btn-outline-success rounded-2" aria-label="Aumentar estoque de {{ $produto->nome }}" title="Aumentar estoque" @disabled($produto->quantidade >= 1000000)>
                     <i class="fa-solid fa-plus"></i>
                 </button>
             </form>
-            <form action="{{ route('produtos.stock.adjust', ['id' => \App\Services\Operations::encryptId($produto->id), 'operacao' => 'diminuir']) }}" method="POST">
+            <form action="{{ route('produtos.stock.adjust', ['operacao' => 'diminuir']) }}" method="POST">
                 @csrf
+                <input type="hidden" name="produto_id" value="{{ \App\Services\Operations::encryptId($produto->id) }}">
                 <button type="submit" class="btn btn-sm btn-outline-danger rounded-2" aria-label="Diminuir estoque de {{ $produto->nome }}" title="Diminuir estoque" @disabled($produto->quantidade === 0)>
                     <i class="fa-solid fa-minus"></i>
                 </button>

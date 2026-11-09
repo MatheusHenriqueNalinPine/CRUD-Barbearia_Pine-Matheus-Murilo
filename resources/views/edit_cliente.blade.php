@@ -6,12 +6,22 @@
         <div class="col-12 col-md-8 col-lg-6">
             <div class="card bg-dark text-light border-0 shadow-lg rounded-4 p-4 p-md-5">
                 <h2 class="h3 text-warning mb-4">
-                    <i class="fa-solid fa-user-pen me-2"></i>Editar cliente
+                    <i class="fa-solid fa-user-pen me-2"></i>Alterar papel do usuário
                 </h2>
 
                 <form action="{{ route('clientes.update', ['id' => \App\Services\Operations::encryptId($cliente->id)]) }}" method="post">
                     @csrf
-                    @include('cliente_form')
+
+                    <div class="mb-3">
+                        <label class="form-label" for="role">Papel do usuário</label>
+                        <select name="role" id="role" class="form-select bg-black text-light border-secondary" required>
+                            <option value="cliente" @selected(old('role', $cliente->role) === 'cliente')>Cliente</option>
+                            <option value="barbeiro" @selected(old('role', $cliente->role) === 'barbeiro')>Barbeiro</option>
+                        </select>
+                        @error('role')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
 
                     <div class="d-flex gap-2 mt-4">
                         <a href="{{ route('clientes.index') }}" class="btn btn-outline-light flex-fill rounded-3">

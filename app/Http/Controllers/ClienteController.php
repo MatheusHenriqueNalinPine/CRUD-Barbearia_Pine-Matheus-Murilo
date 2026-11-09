@@ -56,41 +56,39 @@ class ClienteController extends Controller
 
     public function edit($id)
     {
+        $userLogado = User::find(session('user.id'));
+        abort_unless($userLogado?->isBarbeiro(), 403);
+
         $decryptedId = Operations::decryptId($id);
         $cliente = User::find($decryptedId);
 
-        if (!$cliente) {
+        if (!$cliente || $cliente->id === $userLogado->id) {
             return redirect()->route('clientes.index');
         }
 
-        return view('edit_cliente', ['cliente' => $cliente]); 
+        return view('edit_cliente', ['cliente' => $cliente]);
     }
 
     public function update(Request $request, $id)
     {
+        $userLogado = User::find(session('user.id'));
+        abort_unless($userLogado?->isBarbeiro(), 403);
+
         $decryptedId = Operations::decryptId($id);
         $cliente = User::find($decryptedId);
 
-        if (!$cliente) {
+        if (!$cliente || $cliente->id === $userLogado->id) {
             return redirect()->route('clientes.index');
         }
 
-        $request->validate([
-            'username' => 'required|min:3|max:100',
-            'email' => 'email|unique:users,email,' . $cliente->id,
-            'role' => 'required|in:cliente,barbeiro',
+        $validated = $request->validate([
+            'role' => ['required', 'in:cliente,barbeiro'],
         ]);
 
-        $cliente->username = $request->username;
-        $cliente->email = $request->email;
-        $cliente->role = $request->role;
-
-        if ($request->filled('password')) {
-            $cliente->password = Hash::make($request->password);
-        }
+        $cliente->role = $validated['role'];
         $cliente->save();
 
-        return redirect()->route('clientes.index');
+        return redirect()->route('clientes.index')->with('success', 'Papel do usuário atualizado com sucesso.');
     }
 
     public function destroy($id)

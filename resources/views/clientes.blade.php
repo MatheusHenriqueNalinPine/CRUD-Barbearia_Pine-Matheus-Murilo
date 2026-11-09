@@ -6,6 +6,10 @@
     @include('sidebar')
 
     <div class="flex-fill p-4 bg-black text-light">
+        @if(session('success'))
+        <div class="alert alert-success" role="status">{{ session('success') }}</div>
+        @endif
+
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
             <h1 class="h3 mb-0">Clientes</h1>
 

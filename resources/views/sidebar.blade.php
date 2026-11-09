@@ -72,9 +72,9 @@
             </a>
         @endif
 
-        <div class="text-center text-secondary small mb-2">
+        <a href="{{ route('perfil.edit') }}" class="d-block text-center text-secondary small text-decoration-none mb-2" aria-label="Editar meus dados">
             <i class="fa-solid fa-user me-1"></i>{{ session('user')['username'] }}
-        </div>
+        </a>
         <a href="{{ route('logout') }}" class="btn btn-danger w-100 text-start">
             <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
         </a>
